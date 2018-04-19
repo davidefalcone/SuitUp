@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SuitUp</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="filtra">FILTRA</string>
+    <string name="il_tuo_armadio">Il tuo armadio</string>
+    <string name="colori">COLORI</string>
+    <string name="abbina">ABBINA</string>
+    <string name="log_in">LOG IN</string>
 </resources>
