@@ -1,8 +1,9 @@
 package DataModel;
 
 
+import java.io.Serializable;
 
-public class Capo {
+public class Capo implements Serializable{
 
 
     public final int MAGLIA = 0;
