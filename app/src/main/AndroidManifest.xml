@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ArmadioActivity" />
-        <activity android:name=".CapoActivity"></activity>
+        <activity android:name=".CapoActivity" />
+        <activity android:name=".AbbinamentoActivity"></activity>
     </application>
 
 </manifest>
