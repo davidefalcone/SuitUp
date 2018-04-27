@@ -32,7 +32,7 @@ public class Capo implements Serializable{
     private Tipo tipo;
     private Stagione stagione;
     private Occasione occasione;
-    private ArrayList<Integer> colori= new ArrayList<Integer>();
+    private ArrayList<Colore> colori= new ArrayList<Colore>();
 
     public Capo() {
     }
