@@ -1,8 +1,15 @@
+package com.example.davide.suitup;
+
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import DataModel.Capo;
+import android.widget.TextView;
+
+import com.example.davide.suitup.DataModel.Capo;
+
+import java.util.List;
 
 public class CapiAdapter extends BaseAdapter {
 
@@ -21,17 +28,21 @@ public class CapiAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public Object getItem(int i) {
+        return elencoCapi.get(i);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int i) {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+    public View getView(int i, View view, ViewGroup viewGroup) {
+
+        if(view == null)
+            view = LayoutInflater.from(context).inflate(R.layout.riga_capo, null);
+
+        TextView
     }
 }

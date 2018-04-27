@@ -1,7 +1,8 @@
-package DataModel;
+package com.example.davide.suitup.DataModel;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Capo implements Serializable{
 
@@ -31,6 +32,7 @@ public class Capo implements Serializable{
     private Tipo tipo;
     private Stagione stagione;
     private Occasione occasione;
+    private ArrayList<Integer> colori= new ArrayList<Integer>();
 
     public Capo() {
     }
