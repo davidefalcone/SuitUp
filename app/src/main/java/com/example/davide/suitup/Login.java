@@ -16,11 +16,11 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        vLogin = findViewById(R.id.loginBtn);
         vLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ArmadioActivity.class);
+                Intent intent = new Intent(v.getContext(), ArmadioActivity.class);
                 startActivity(intent);
 
 

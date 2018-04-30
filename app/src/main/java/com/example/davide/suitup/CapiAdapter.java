@@ -43,6 +43,17 @@ public class CapiAdapter extends BaseAdapter {
         if(view == null)
             view = LayoutInflater.from(context).inflate(R.layout.riga_capo, null);
 
-        TextView
+        TextView vNomecapo = view.findViewById(R.id.textNomecapo);
+
+        Capo capo = elencoCapi.get(i);
+        vNomecapo.setText(capo.getNomeCapo());
+        return view;
     }
+
+    public void setElencoCapi (List<Capo> elencoCapi)
+    {
+        this.elencoCapi = elencoCapi;
+        notifyDataSetChanged();
+    }
+
 }

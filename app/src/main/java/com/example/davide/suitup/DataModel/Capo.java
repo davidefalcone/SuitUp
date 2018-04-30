@@ -7,27 +7,10 @@ import java.util.ArrayList;
 public class Capo implements Serializable{
 
 
-    public final int MAGLIA = 0;
-    public final int PANTALONE = 1;
-    public final int SCARPE = 2;
-    public final int ELEGANTE = 0;
-    public final int SPORTIVO = 0;
-    public final int ESTIVO = 0;
-    public final int ROSSO = 0;
-    public final int GIALLO = 1;
-    public final int VERDE = 2;
-    public final int JEANS = 3;
-    public final int BLU = 4;
-    public final int NERO = 5;
-    public final int BEIGE = 6;
-    public final int GRIGIO = 7;
-    public final int BORDEAUX = 8;
-    public final int MARRONE = 9;
-    public final int INVERNALE = 0;
-    public enum Tipo = {MAGLIA, PANTALONE, SCARPE};
-    public enum Stagione = {ESTIVO, INVERNALE};
-    public enum Occasione = {ELEGANTE, SPORTIVO};
-    public enum Colore = {ROSSO, GIALLO, VERDE, JEANS, BLU, NERO ,BEIGE, GRIGIO, BORDEAUX, MARRONE};
+    public enum Tipo  {Maglia, Pantalone, Scarpe};
+    public enum Stagione  {Estivo, Invernale};
+    public enum Occasione  {Elegante, Sportivo};
+    public enum Colore  {Rosso, Giallo, Verde, Jeans, Blu, Nero, Beige, Grigio, Bordeaux, Marrone};
     private String nomeCapo;
     private Tipo tipo;
     private Stagione stagione;
@@ -44,9 +27,7 @@ public class Capo implements Serializable{
         this.occasione = occasione;
     }
 
-    public int getMAGLIA() {
-        return MAGLIA;
-    }
+
 
     public String getNomeCapo() {
         return nomeCapo;
@@ -78,6 +59,16 @@ public class Capo implements Serializable{
 
     public void setOccasione(Occasione occasione) {
         this.occasione = occasione;
+    }
+
+    public void AggiungiColore (Capo capo, Colore colore)
+    {
+        capo.colori.add(colore);
+    }
+
+    public void RimuoviColore (Capo capo, Colore colore)
+    {
+        capo.colori.remove(colore);
     }
 
 
