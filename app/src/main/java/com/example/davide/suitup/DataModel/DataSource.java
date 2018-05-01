@@ -27,46 +27,29 @@ public class DataSource{
             popolaDataSource();
             }
 
-    /**
-     * Ottiene il riferimento alla sorgente dati
-     * @return restituisce l'instanza corrente
-     */
+
     public static DataSource getInstance() {
             if (instance == null)
             instance = new DataSource();
             return instance;
             }
 
-    /**
-     * Aggiunge un studente
-     * @param studente studente da aggiungere
-     */
-    public void addStudente(Capo studente) {
-     //       elencoCapi.put(studente.getMatricola(), studente);
+
+    public void addCapo(Capo capo) {
+            elencoCapi.put(capo.getNomeCapo(), capo);
             }
 
-    /**
-     * Elimina uno studente
-     * @param matricola matricola da eliminare
-     */
-    public void deleteStudente(String matricola) {
-     //       elencoStudenti.remove(matricola);
+
+    public void deleteCapo(String nomeCapo) {
+            elencoCapi.remove(nomeCapo);
             }
 
-    /**
-     * Cerca uno studente partendo dalla matricola
-     * @param matricola matricola da cercare
-     * @return Studente trovoto (null in caso contrario)
-     */
-    public Capo getCapo(String matricola) {
-            return elencoCapi.get(matricola);
+
+    public Capo getCapo(String nomeCapo) {
+            return elencoCapi.get(nomeCapo);
             }
 
-    /**
-     * Restituisce un elenco di studenti che hanno la matricola con il prefisso passato
-     * @param prefissoMatricola prefisso da cercare
-     * @return elenco studenti trovato
-     */
+
     public List<Capo> getElencoCapi(Capo.Tipo tipo) {
 
             ArrayList<Capo> risultato = new ArrayList<Capo>();

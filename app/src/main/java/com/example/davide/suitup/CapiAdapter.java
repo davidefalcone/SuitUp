@@ -28,7 +28,7 @@ public class CapiAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Capo getItem(int i) {
         return elencoCapi.get(i);
     }
 
