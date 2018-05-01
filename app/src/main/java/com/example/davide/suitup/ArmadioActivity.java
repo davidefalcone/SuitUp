@@ -2,6 +2,7 @@ package com.example.davide.suitup;
 
 import android.content.Intent;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,9 @@ import com.example.davide.suitup.DataModel.DataSource;
 
 
 public class ArmadioActivity extends AppCompatActivity {
+
+    //sfondo prova
+
 
     //Riferimenti alle view
     private ListView vListaCapi;

@@ -5,10 +5,12 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.davide.suitup.DataModel.Capo.Occasione.Casual;
 import static com.example.davide.suitup.DataModel.Capo.Occasione.Elegante;
 import static com.example.davide.suitup.DataModel.Capo.Occasione.Sportivo;
-import static com.example.davide.suitup.DataModel.Capo.Stagione.Estivo;
-import static com.example.davide.suitup.DataModel.Capo.Stagione.Invernale;
+import static com.example.davide.suitup.DataModel.Capo.Stagione.PrimaveraEstate;
+import static com.example.davide.suitup.DataModel.Capo.Stagione.AutunnoInverno;
+import static com.example.davide.suitup.DataModel.Capo.Tipo.Felpa;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Maglia;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Pantalone;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Scarpe;
@@ -77,9 +79,15 @@ public class DataSource{
 // Popolo il data source con dati di prova
 private void popolaDataSource() {
 
-        elencoCapi.put("Gucci limited edition", new Capo("Gucci limited edition", Maglia, Invernale, Elegante));
-        elencoCapi.put("H&M divided", new Capo("H&M divided", Pantalone, Estivo, Sportivo));
-        elencoCapi.put("Cortez", new Capo("Cortez", Scarpe, Estivo, Elegante));
-
+        elencoCapi.put("Gucci limited edition", new Capo("Gucci limited edition", Maglia, AutunnoInverno, Elegante));
+        elencoCapi.put("H&M divided", new Capo("H&M divided", Pantalone, PrimaveraEstate, Sportivo));
+        elencoCapi.put("Cortez", new Capo("Cortez", Scarpe, PrimaveraEstate, Elegante));
+        elencoCapi.put("Adidas SuperStar", new Capo("Adidas SuperStar", Scarpe, PrimaveraEstate, Casual));
+        elencoCapi.put("Converse All Star", new Capo("Converse All Star", Scarpe, PrimaveraEstate, Casual));
+        elencoCapi.put("Nike Blazer", new Capo("Nike Blazer", Scarpe, PrimaveraEstate, Sportivo));
+        elencoCapi.put("Adidas Pirulicchio", new Capo("Adidas Pirulicchio", Felpa, AutunnoInverno, Casual));
+        elencoCapi.put("Superga", new Capo("Superga", Scarpe, PrimaveraEstate, Casual));
+        elencoCapi.put("Adidas", new Capo("Adidas", Pantalone, PrimaveraEstate, Sportivo));
+        elencoCapi.put("Nike Air Max", new Capo("Nike Air Max", Scarpe, PrimaveraEstate, Sportivo));
         }
 }

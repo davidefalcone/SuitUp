@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public class Capo implements Serializable{
 
 
-    public enum Tipo  {Maglia, Pantalone, Scarpe};
-    public enum Stagione  {Estivo, Invernale};
-    public enum Occasione  {Elegante, Sportivo};
-    public enum Colore  {Rosso, Giallo, Verde, Jeans, Blu, Nero, Beige, Grigio, Bordeaux, Marrone};
+    public enum Tipo  {Maglia, Pantalone, Scarpe, Felpa, Giacca, Abito, Camicia, Gonna, Jeans };
+    public enum Stagione  {PrimaveraEstate, AutunnoInverno};
+    public enum Occasione  {Elegante, Sportivo, Casual};
+    public enum Colore  {Rosso, Giallo, Verde, Blu, Nero, Beige, Grigio, Bordeaux, Marrone};
     private String nomeCapo;
     private Tipo tipo;
     private Stagione stagione;
