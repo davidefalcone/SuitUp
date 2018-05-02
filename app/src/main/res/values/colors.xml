@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
+    <color name="black">@android:color/black</color>
+    <color name="nero">@android:color/black</color>
+    <color name="rosso">#ff0000</color>
+    <color name="giallo">#fbff00</color>
+    <color name="blu">#0055ff</color>
+    <color name="bordeaux">#c31043</color>
+    <color name="beige">#e9c865</color>
+    <color name="verde">#2aff09</color>
+    <color name="grigio">#b1b1b1</color>
+    <color name="marrone">#a13f00</color>
 </resources>

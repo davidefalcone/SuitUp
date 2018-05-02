@@ -1,6 +1,7 @@
 package com.example.davide.suitup.DataModel;
 
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ public class Capo implements Serializable{
     public enum Tipo  {Maglia, Pantalone, Scarpe, Felpa, Giacca, Abito, Camicia, Gonna, Jeans };
     public enum Stagione  {PrimaveraEstate, AutunnoInverno};
     public enum Occasione  {Elegante, Sportivo, Casual};
-    public enum Colore  {Rosso, Giallo, Verde, Blu, Nero, Beige, Grigio, Bordeaux, Marrone};
     private String nomeCapo;
     private Tipo tipo;
     private Stagione stagione;
@@ -70,6 +70,8 @@ public class Capo implements Serializable{
     {
         capo.colori.remove(colore);
     }
+
+
 
 
 }
