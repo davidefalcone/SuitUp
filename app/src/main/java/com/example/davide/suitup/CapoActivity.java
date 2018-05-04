@@ -1,6 +1,7 @@
 package com.example.davide.suitup;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.davide.suitup.DataModel.Capo;
 import android.support.v4.app.Fragment;
+
+import java.util.ArrayList;
 
 
 public class CapoActivity extends AppCompatActivity {
@@ -25,6 +28,9 @@ public class CapoActivity extends AppCompatActivity {
 
     //chiave per il passaggio parametri dall'altra activity
     private final String EXTRA_CAPO = "capo";
+    private final String EXTRA_COLORI = "colori";
+    private final String ACTIVITY_CHIAMANTE = "activity";
+    private final int ACTIVITY_CAPO = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,10 @@ public class CapoActivity extends AppCompatActivity {
         if(capo != null){
             vNomeCapo.setText(capo.getNomeCapo());
             vOccasioneStagione.setText(capo.getOccasione()+" • "+capo.getStagione());
-
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(EXTRA_COLORI, capo.getColori());
+            bundle.putInt(ACTIVITY_CHIAMANTE, ACTIVITY_CAPO);
+            fragment.setArguments(bundle);
         }
 
 

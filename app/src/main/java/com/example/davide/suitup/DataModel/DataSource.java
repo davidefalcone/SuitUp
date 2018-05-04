@@ -1,5 +1,7 @@
 package com.example.davide.suitup.DataModel;
 
+import com.example.davide.suitup.R;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -79,7 +81,10 @@ public class DataSource{
 // Popolo il data source con dati di prova
 private void popolaDataSource() {
 
-        elencoCapi.put("Gucci limited edition", new Capo("Gucci limited edition", Maglia, AutunnoInverno, Elegante));
+        Colore rosso = new Colore ("Rosso",R.color.rosso);
+        ArrayList<Colore> listaprova = new ArrayList<>();
+        listaprova.add(rosso);
+        elencoCapi.put("Gucci limited edition", new Capo("Gucci limited edition", Maglia, AutunnoInverno, Elegante, listaprova));
         elencoCapi.put("H&M divided", new Capo("H&M divided", Pantalone, PrimaveraEstate, Sportivo));
         elencoCapi.put("Cortez", new Capo("Cortez", Scarpe, PrimaveraEstate, Elegante));
         elencoCapi.put("Adidas SuperStar", new Capo("Adidas SuperStar", Scarpe, PrimaveraEstate, Casual));

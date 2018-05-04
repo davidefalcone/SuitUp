@@ -2,6 +2,7 @@ package com.example.davide.suitup;
 
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,26 +19,31 @@ import java.util.ArrayList;
 
 public class HorizontalListViewFragment extends Fragment {
 
-    ArrayList<Colore> listitems = new ArrayList<>();
-    RecyclerView recyclerView;
-    String colori [] = { "Rosso", "Giallo", "Verde", "Blu", "Nero", "Beige", "Grigio", "Bordeaux", "Marrone" };
-    int images [] = { R.color.rosso, R.color.giallo, R.color.verde, R.color.blu, R.color.black, R.color.beige, R.color.grigio, R.color.bordeaux, R.color.marrone };
+    //intero che tiene conto dell'activity chiamante
+    private int activity;
 
-    public HorizontalListViewFragment() {
+    //riferimenti alle view
+    private ArrayList<Colore> listitems = new ArrayList<>();
+    private RecyclerView recyclerView;
+
+    //stringhe necessarie per il passaggio di parametri dalle activity
+    public final String EXTRA_COLORI = "colori";
+    private final String ACTIVITY_CHIAMANTE = "activity";
+    private final int ACTIVITY_CAPO = 0;
+    private final int ACTIVITY_EDIT_CAPO = 1;
+
+    public HorizontalListViewFragment () {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listitems.clear();
-        for (int i = 0; i<colori.length; i++){
-            Colore item = new Colore();
-            item.setNomeColore(colori[i]);
-            item.setImageResourceId(images[i]);
-            listitems.add(item);
-        } getActivity().setTitle("Colori");
+        listitems = getArguments().getParcelableArrayList(EXTRA_COLORI);
+        activity = getArguments().getInt(ACTIVITY_CHIAMANTE);
+
+
     }
 
     @Override
@@ -49,7 +55,7 @@ public class HorizontalListViewFragment extends Fragment {
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         if (listitems.size() > 0 & recyclerView != null) {
-            recyclerView.setAdapter(new ColoriAdapter(listitems));
+            recyclerView.setAdapter(ColoriAdapter.getInstance(listitems, activity));
         }
         recyclerView.setLayoutManager(MyLayoutManager);
 

@@ -1,9 +1,12 @@
 package com.example.davide.suitup;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,24 +14,31 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.davide.suitup.DataModel.Capo;
+import com.example.davide.suitup.DataModel.Colore;
 
 import java.lang.reflect.Array;
 
 public class EditCapoActivity extends AppCompatActivity {
 
+    //riferimenti alle view
     private Button vOk;
     private Button vAnnulla;
     private EditText vNome;
     private Spinner vTipo;
     private Spinner vOccasione;
     private Spinner vStagione;
+    private FragmentManager fm;
 
     private final String EXTRA_CAPO = "capo";
+    private final String EXTRA_COLORI = "colori";
+    private final String ACTIVITY_CHIAMANTE = "activity";
+    private final int ACTIVITY_EDIT_CAPO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_capo);
+
 
         //ottengo i riferimenti alle view
         vOk = findViewById(R.id.btnOk);
@@ -37,6 +47,14 @@ public class EditCapoActivity extends AppCompatActivity {
         vTipo = findViewById(R.id.spnTipo);
         vOccasione = findViewById(R.id.spnOccasione);
         vStagione = findViewById(R.id.spnStagione);
+        fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
+
+        //imposto il fragment per la lista colori
+        if (fragment == null ) {
+            fragment = new HorizontalListViewFragment();
+            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+        }
 
         //imposto gli spinner
         ArrayAdapter<Capo.Tipo> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,Capo.Tipo.values());
@@ -55,6 +73,10 @@ public class EditCapoActivity extends AppCompatActivity {
             vTipo.setSelection(capo.getTipo().ordinal());
             vStagione.setSelection(capo.getStagione().ordinal());
             vOccasione.setSelection(capo.getOccasione().ordinal());
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(EXTRA_COLORI, capo.getColori());
+            bundle.putInt(ACTIVITY_CHIAMANTE, ACTIVITY_EDIT_CAPO);
+            fragment.setArguments(bundle);
         }
 
         //imposto il pulsante ok
@@ -90,6 +112,7 @@ public class EditCapoActivity extends AppCompatActivity {
         capo.setTipo(Capo.Tipo.values()[vTipo.getSelectedItemPosition()]);
         capo.setStagione(Capo.Stagione.values()[vStagione.getSelectedItemPosition()]);
         capo.setOccasione(Capo.Occasione.values()[vOccasione.getSelectedItemPosition()]);
+        capo.setColori(ColoriAdapter.getInstance().getListaColori());
         return capo;
     }
 }

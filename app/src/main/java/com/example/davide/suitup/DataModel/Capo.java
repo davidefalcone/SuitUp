@@ -2,6 +2,8 @@ package com.example.davide.suitup.DataModel;
 
 
 
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -20,6 +22,13 @@ public class Capo implements Serializable{
     public Capo() {
     }
 
+    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori) {
+        this.nomeCapo = nomeCapo;
+        this.tipo = tipo;
+        this.stagione = stagione;
+        this.occasione = occasione;
+        this.colori = colori;
+    }
     public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione) {
         this.nomeCapo = nomeCapo;
         this.tipo = tipo;
@@ -71,7 +80,12 @@ public class Capo implements Serializable{
         capo.colori.remove(colore);
     }
 
+    public ArrayList<Colore> getColori() {
+        return colori;
+    }
 
-
+    public void setColori(ArrayList<Colore> colori) {
+        this.colori = colori;
+    }
 
 }
