@@ -38,6 +38,9 @@ public class ArmadioActivity extends AppCompatActivity {
 
     //chiave per il passaggio di parametri alla nuova activity
     private final String EXTRA_CAPO = "capo";
+    private final String ACTIVITY_CHIAMANTE = "activity";
+    private final int ACTIVITY_CAPO = 0;
+    private final int ACTIVITY_EDIT_CAPO = 1;
 
     // Costanti con i result code
     private final int REQ_ADD_CAPO = 1;
@@ -70,7 +73,7 @@ public class ArmadioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EditCapoActivity.class);
                 startActivityForResult(intent, REQ_ADD_CAPO);
-            }
+                }
         });
 
         registerForContextMenu(vListaCapi);

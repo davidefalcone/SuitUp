@@ -19,31 +19,17 @@ import java.util.ArrayList;
 
 public class HorizontalListViewFragment extends Fragment {
 
-    //intero che tiene conto dell'activity chiamante
-    private int activity;
-
     //riferimenti alle view
     private ArrayList<Colore> listitems = new ArrayList<>();
     private RecyclerView recyclerView;
 
     //stringhe necessarie per il passaggio di parametri dalle activity
-    public final String EXTRA_COLORI = "colori";
-    private final String ACTIVITY_CHIAMANTE = "activity";
-    private final int ACTIVITY_CAPO = 0;
-    private final int ACTIVITY_EDIT_CAPO = 1;
+    public final String EXTRA_CAPO = "capo";
+    private final String EXTRA_COLORI = "colori";
+
 
     public HorizontalListViewFragment () {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        listitems.clear();
-        listitems = getArguments().getParcelableArrayList(EXTRA_COLORI);
-        activity = getArguments().getInt(ACTIVITY_CHIAMANTE);
-
-
     }
 
     @Override
@@ -54,8 +40,10 @@ public class HorizontalListViewFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        if (listitems.size() > 0 & recyclerView != null) {
-            recyclerView.setAdapter(ColoriAdapter.getInstance(listitems, activity));
+        if (recyclerView != null) {
+
+            recyclerView.setAdapter((CapoColoriAdapter)getArguments().getSerializable(EXTRA_COLORI));
+
         }
         recyclerView.setLayoutManager(MyLayoutManager);
 

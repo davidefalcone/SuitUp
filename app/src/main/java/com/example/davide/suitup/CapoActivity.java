@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 public class CapoActivity extends AppCompatActivity {
 
+    //adapter
+    private CapoColoriAdapter adapter;
+
     //creo i riferimenti alle view
     private ImageView vImageview;
     private Button vElimina;
@@ -29,8 +32,7 @@ public class CapoActivity extends AppCompatActivity {
     //chiave per il passaggio parametri dall'altra activity
     private final String EXTRA_CAPO = "capo";
     private final String EXTRA_COLORI = "colori";
-    private final String ACTIVITY_CHIAMANTE = "activity";
-    private final int ACTIVITY_CAPO = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,9 @@ public class CapoActivity extends AppCompatActivity {
             vNomeCapo.setText(capo.getNomeCapo());
             vOccasioneStagione.setText(capo.getOccasione()+" • "+capo.getStagione());
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(EXTRA_COLORI, capo.getColori());
-            bundle.putInt(ACTIVITY_CHIAMANTE, ACTIVITY_CAPO);
+            adapter = new CapoColoriAdapter(capo.getColori());
+            if(adapter!=null)
+            bundle.putSerializable(EXTRA_COLORI, adapter);
             fragment.setArguments(bundle);
         }
 
