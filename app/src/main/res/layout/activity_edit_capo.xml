@@ -24,11 +24,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/tipo"
-        app:layout_constraintEnd_toStartOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/spnTipo"
         app:layout_constraintTop_toBottomOf="@+id/editNome" />
 
     <Button
@@ -65,16 +64,15 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="36dp"
         android:text="@string/colori"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spnTipo" />
+        app:layout_constraintTop_toBottomOf="@+id/spnOccasione" />
 
     <EditText
         android:id="@+id/editNome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="46dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:ems="10"
@@ -87,10 +85,11 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="100dp"
         android:text="@string/stagione"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/textView6"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView" />
 
     <Spinner
@@ -99,62 +98,55 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/spnStagione"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editNome"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Spinner
         android:id="@+id/spnStagione"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/spnTipo"
-        app:layout_constraintEnd_toStartOf="@+id/spnOccasione"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/spnTipo" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/occasione"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView4" />
+        app:layout_constraintStart_toStartOf="@+id/spnOccasione"
+        app:layout_constraintTop_toBottomOf="@+id/spnTipo" />
 
     <Spinner
         android:id="@+id/spnOccasione"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/spnStagione"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/spnStagione" />
+        app:layout_constraintStart_toStartOf="@+id/spnTipo"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
-        android:layout_width="338dp"
-        android:layout_height="67dp"
+        android:layout_width="260dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnOk"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.0"></FrameLayout>
 
     <Button
         android:id="@+id/btnAggiungi"
-        style="@android:style/Widget.Material.Button.Borderless"
-        android:layout_width="122dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/aggiungi_colore"
+        style="@android:style/Widget.Holo.Button.Inset"
+        android:layout_width="39dp"
+        android:layout_height="39dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/ic_action_name"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
         android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fragmentContainer" />
 
 </android.support.constraint.ConstraintLayout>

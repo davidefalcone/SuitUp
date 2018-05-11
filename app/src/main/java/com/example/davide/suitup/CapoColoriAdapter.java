@@ -41,7 +41,8 @@ public class CapoColoriAdapter extends RecyclerView.Adapter<ViewHolder> implemen
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
 
         holder.vColoreImage.setImageResource(listaColori.get(i).getImageResourceId());
-        }
+
+    }
 
 
     @Override

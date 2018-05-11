@@ -40,9 +40,14 @@ public class HorizontalListViewFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        if (recyclerView != null) {
+        if (recyclerView != null ) {
 
-            recyclerView.setAdapter((CapoColoriAdapter)getArguments().getSerializable(EXTRA_COLORI));
+            if( getArguments() == null ){
+                //se get arguments è null, significa che sto creando un capo
+                //recyclerView.setAdapter(new EditColoriAdapter());
+            }else
+                //imposto l'adapter della recyclerview
+                recyclerView.setAdapter((CapoColoriAdapter)getArguments().getSerializable(EXTRA_COLORI));
 
         }
         recyclerView.setLayoutManager(MyLayoutManager);

@@ -81,9 +81,11 @@ public class DataSource{
 // Popolo il data source con dati di prova
 private void popolaDataSource() {
 
-        Colore rosso = new Colore ("Rosso",R.color.rosso);
         ArrayList<Colore> listaprova = new ArrayList<>();
-        listaprova.add(rosso);
+        listaprova.add(new Colore ("Rosso",R.color.rosso));
+        listaprova.add(new Colore("Giallo", R.color.giallo));
+        listaprova.add(new Colore("Bianco", R.color.bianco));
+
         elencoCapi.put("Gucci limited edition", new Capo("Gucci limited edition", Maglia, AutunnoInverno, Elegante, listaprova));
         elencoCapi.put("H&M divided", new Capo("H&M divided", Pantalone, PrimaveraEstate, Sportivo));
         elencoCapi.put("Cortez", new Capo("Cortez", Scarpe, PrimaveraEstate, Elegante));

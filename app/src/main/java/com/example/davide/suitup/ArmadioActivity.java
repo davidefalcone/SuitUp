@@ -24,9 +24,6 @@ import com.example.davide.suitup.DataModel.DataSource;
 
 public class ArmadioActivity extends AppCompatActivity {
 
-    //sfondo prova
-
-
     //Riferimenti alle view
     private ListView vListaCapi;
     private Button vFiltra;
@@ -38,9 +35,6 @@ public class ArmadioActivity extends AppCompatActivity {
 
     //chiave per il passaggio di parametri alla nuova activity
     private final String EXTRA_CAPO = "capo";
-    private final String ACTIVITY_CHIAMANTE = "activity";
-    private final int ACTIVITY_CAPO = 0;
-    private final int ACTIVITY_EDIT_CAPO = 1;
 
     // Costanti con i result code
     private final int REQ_ADD_CAPO = 1;
