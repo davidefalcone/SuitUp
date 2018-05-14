@@ -8,5 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="tema" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:statusBarColor">@android:color/holo_blue_dark</item>
+    </style>
+
 
 </resources>

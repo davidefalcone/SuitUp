@@ -20,12 +20,11 @@ import java.util.ArrayList;
 public class HorizontalListViewFragment extends Fragment {
 
     //riferimenti alle view
-    private ArrayList<Colore> listitems = new ArrayList<>();
     private RecyclerView recyclerView;
 
     //stringhe necessarie per il passaggio di parametri dalle activity
-    public final String EXTRA_CAPO = "capo";
     private final String EXTRA_COLORI = "colori";
+
 
 
     public HorizontalListViewFragment () {
@@ -40,18 +39,11 @@ public class HorizontalListViewFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        if (recyclerView != null ) {
+        if (recyclerView != null && getArguments() != null) {
+            recyclerView.setAdapter((CapoColoriAdapter) getArguments().getSerializable(EXTRA_COLORI));
+            }
 
-            if( getArguments() == null ){
-                //se get arguments è null, significa che sto creando un capo
-                //recyclerView.setAdapter(new EditColoriAdapter());
-            }else
-                //imposto l'adapter della recyclerview
-                recyclerView.setAdapter((CapoColoriAdapter)getArguments().getSerializable(EXTRA_COLORI));
-
-        }
         recyclerView.setLayoutManager(MyLayoutManager);
-
         return view;
     }
     @Override

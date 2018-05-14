@@ -1,12 +1,5 @@
 package com.example.davide.suitup.DataModel;
 
-
-
-
-import android.util.Log;
-
-import com.example.davide.suitup.R;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -14,23 +7,34 @@ public class Capo implements Serializable{
 
 
     public enum Tipo  {Maglia, Pantalone, Scarpe, Felpa, Giacca, Abito, Camicia, Gonna, Jeans };
-    public enum Stagione  {PrimaveraEstate, AutunnoInverno};
+    public enum Stagione  {
+        PrimaveraEstate, AutunnoInverno;
+
+        @Override
+        public String toString() {
+            if ( this == PrimaveraEstate )
+                return "Primavera/Estate";
+            else return "Autunno/Inverno";
+        }
+    };
     public enum Occasione  {Elegante, Sportivo, Casual};
     private String nomeCapo;
     private Tipo tipo;
     private Stagione stagione;
     private Occasione occasione;
+    private int image;
     private ArrayList<Colore> colori= new ArrayList<Colore>();
 
     public Capo() {
     }
 
-    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori) {
+    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori, int image) {
         this.nomeCapo = nomeCapo;
         this.tipo = tipo;
         this.stagione = stagione;
         this.occasione = occasione;
         this.colori = colori;
+        this.image = image;
     }
     public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione) {
         this.nomeCapo = nomeCapo;
@@ -91,5 +95,11 @@ public class Capo implements Serializable{
         this.colori = colori;
     }
 
+    public int getImage() {
+        return image;
+    }
 
+    public void setImage(int image) {
+        this.image = image;
+    }
 }

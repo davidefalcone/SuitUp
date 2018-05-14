@@ -1,17 +1,23 @@
 package com.example.davide.suitup;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.davide.suitup.DataModel.Capo;
 import android.support.v4.app.Fragment;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -54,21 +60,19 @@ public class CapoActivity extends AppCompatActivity {
         }
 
         //ottengo i dati forniti dall'activity precedente
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Capo capo = (Capo)intent.getSerializableExtra(EXTRA_CAPO);
 
         if(capo != null){
             vNomeCapo.setText(capo.getNomeCapo());
             vOccasioneStagione.setText(capo.getOccasione()+" • "+capo.getStagione());
+            vImageview.setImageResource(capo.getImage());
             Bundle bundle = new Bundle();
             adapter = new CapoColoriAdapter(capo.getColori());
             if(adapter!=null)
             bundle.putSerializable(EXTRA_COLORI, adapter);
             fragment.setArguments(bundle);
         }
-
-
-
 
     }
 }

@@ -26,7 +26,6 @@ public class ArmadioActivity extends AppCompatActivity {
 
     //Riferimenti alle view
     private ListView vListaCapi;
-    private Button vFiltra;
     private Button vAggiungi;
 
     //Adapter e data source
@@ -50,7 +49,7 @@ public class ArmadioActivity extends AppCompatActivity {
 
         //recupero i riferimenti alle view
         vListaCapi = findViewById(R.id.listaCapi);
-        vFiltra = findViewById(R.id.btnFiltra);
+        //vFiltra = findViewById(R.id.btnFiltra);
         vAggiungi = findViewById(R.id.btnAggiungi);
 
         // Riferimento al data source
