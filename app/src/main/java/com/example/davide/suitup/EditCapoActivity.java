@@ -1,9 +1,12 @@
 package com.example.davide.suitup;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -16,10 +19,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.davide.suitup.DataModel.Capo;
 import com.example.davide.suitup.DataModel.Colore;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -30,7 +45,9 @@ public class EditCapoActivity extends AppCompatActivity {
     private EditColoriAdapter coloriAdapter = new EditColoriAdapter();
     private ArrayList<Colore> listaColori = Colore.Tuttiicolori();
     private Capo capo;
-
+    private StorageReference storage = FirebaseStorage.getInstance().getReference();
+    private StorageReference imagePath;
+    private Bitmap immagineAttuale;
     //TAG
     private final String EMPTY = "empty";
     private final String NO_EMPTY = "no_empty";
@@ -47,6 +64,7 @@ public class EditCapoActivity extends AppCompatActivity {
     private Button vAggiungi;
     private Fragment fragment;
     private ImageView vImage;
+    private ProgressBar progressBar;
 
     private final String EXTRA_CAPO = "capo";
     private final String EXTRA_COLORI = "colori";
@@ -69,9 +87,12 @@ public class EditCapoActivity extends AppCompatActivity {
         vStagione = findViewById(R.id.spnStagione);
         vAggiungi = findViewById(R.id.btnAggiungi);
         vImage = findViewById(R.id.imageCapo);
+        progressBar = findViewById(R.id.progress);
+        progressBar.setVisibility(View.GONE);
 
-        vImage.setImageResource(R.drawable.emptyimage);
-        vImage.setTag(EMPTY);
+        immagineAttuale = BitmapFactory.decodeResource(getResources(), R.drawable.emptyimage);
+        vImage.setImageBitmap(immagineAttuale);
+        //vImage.setTag(EMPTY);
 
         //riferimento al fragment
         fm = getSupportFragmentManager();
@@ -107,8 +128,10 @@ public class EditCapoActivity extends AppCompatActivity {
             vTipo.setSelection(capo.getTipo().ordinal());
             vStagione.setSelection(capo.getStagione().ordinal());
             vOccasione.setSelection(capo.getOccasione().ordinal());
-            vImage.setImageResource(capo.getImage());
-            vImage.setTag(NO_EMPTY);
+            imagePath = storage.child(capo.getNomeCapo()+".jpg");
+            GlideApp.with(this).load(imagePath).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true) .into(vImage);
+            //vImage.setTag(NO_EMPTY);
             coloriAdapter = new EditColoriAdapter(capo.getColori());
             listaColori.clear();
             listaColori = Colore.ColoriRimanenti(capo);
@@ -121,26 +144,7 @@ public class EditCapoActivity extends AppCompatActivity {
         vAggiungi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                final AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                alert.setTitle(R.string.seleziona_colore);
-                alert.setView(R.layout.fragment_scegli_colore);
-                final ColoriAdapter adapter = new ColoriAdapter(listaColori, getApplicationContext());
-                alert.setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        if ( capo == null ){
-                            capo = new Capo();
-                            }
-                            capo.getColori().add(listaColori.get(i));
-                            coloriAdapter.setListaColori(capo.getColori());
-                            listaColori.remove(i);
-                    }
-                });
-
-                //mostro il popup
-                final AlertDialog alertDialog = alert.create();
-                alertDialog.show();
+                AggiungiColore();
             }
         });
 
@@ -186,10 +190,12 @@ public class EditCapoActivity extends AppCompatActivity {
         capo.setStagione(Capo.Stagione.values()[vStagione.getSelectedItemPosition()]);
         capo.setOccasione(Capo.Occasione.values()[vOccasione.getSelectedItemPosition()]);
         capo.setColori(coloriAdapter.getListaColori());
-        capo.setImage(vImage.getId());
-        if(capo.getNomeCapo().length()>=1 && capo.getColori().size()>=1 && vImage.getTag() != EMPTY){
-            return capo;
-        }else return null;
+        if(capo.getNomeCapo().length()>=1 && capo.getColori().size()>=1 && !(vImage.getId() == (int)R.drawable.emptyimage)){
+                ArmadioActivity.ImageDelete(capo.getNomeCapo(), imagePath);
+                UploadImage();
+                return capo;
+            }
+        else return null;
     }
 
     @Override
@@ -203,9 +209,9 @@ public class EditCapoActivity extends AppCompatActivity {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    vImage.setImageBitmap(bitmap);
-                    vImage.setTag(NO_EMPTY);
+                    immagineAttuale = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    vImage.setImageBitmap(immagineAttuale);
+                   // vImage.setTag(NO_EMPTY);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -214,9 +220,9 @@ public class EditCapoActivity extends AppCompatActivity {
             }
 
         } else if (requestCode == CAMERA) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            vImage.setImageBitmap(bitmap);
-            vImage.setTag(NO_EMPTY);
+            immagineAttuale = (Bitmap) data.getExtras().get("data");
+            vImage.setImageBitmap(immagineAttuale);
+           // vImage.setTag(NO_EMPTY);
         }
     }
 
@@ -266,7 +272,50 @@ public class EditCapoActivity extends AppCompatActivity {
     }
     private void rimuovi(){
         vImage.setImageResource(R.drawable.emptyimage);
-        vImage.setTag(EMPTY);
+        //vImage.setTag(EMPTY);
+    }
+
+    private void AggiungiColore(){
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+        alert.setTitle(R.string.seleziona_colore);
+        alert.setView(R.layout.fragment_scegli_colore);
+        final ColoriAdapter adapter = new ColoriAdapter(listaColori, getApplicationContext());
+        alert.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                if ( capo == null ){
+                    capo = new Capo();
+                }
+                capo.getColori().add(listaColori.get(i));
+                coloriAdapter.setListaColori(capo.getColori());
+                listaColori.remove(i);
+            }
+        });
+
+        //mostro il popup
+        final AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+    }
+
+    private void UploadImage(){
+        imagePath = storage.child(capo.getNomeCapo()+".jpg");
+        imagePath.delete();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagineAttuale.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask = imagePath.putBytes(data);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 }

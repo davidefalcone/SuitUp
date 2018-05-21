@@ -1,6 +1,17 @@
 package com.example.davide.suitup.DataModel;
 
+import android.content.Context;
+import android.widget.ListView;
+
+import com.example.davide.suitup.CapiAdapter;
 import com.example.davide.suitup.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.OnProgressListener;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -17,88 +28,80 @@ import static com.example.davide.suitup.DataModel.Capo.Tipo.Maglia;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Pantalone;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Scarpe;
 
-public class DataSource{
+public class DataSource {
 
-    // Lista locale per simulare una ipotetica sorgente dati
-    private Hashtable<String, Capo> elencoCapi;
+    //riferiento al database
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+    // Lista locale
+    private ArrayList<Capo> elencoCapi;
+
+    //adapter
+    private CapiAdapter adapter;
 
     // Unica instanza
     private static DataSource instance = null;
 
     // Costruttore privato
     private DataSource() {
-            elencoCapi = new Hashtable<>();
-            popolaDataSource();
-            }
+        elencoCapi = new ArrayList<>();
+    }
 
 
     public static DataSource getInstance() {
-            if (instance == null)
+        if (instance == null)
             instance = new DataSource();
-            return instance;
-            }
+        return instance;
+    }
 
 
     public void addCapo(Capo capo) {
-            elencoCapi.put(capo.getNomeCapo(), capo);
-            }
+        database.child(capo.getNomeCapo()).setValue(capo);
+    }
 
 
     public void deleteCapo(String nomeCapo) {
-            elencoCapi.remove(nomeCapo);
+        for (int i = 0; i<elencoCapi.size(); i++){
+            if(nomeCapo == elencoCapi.get(i).getNomeCapo()) {
+                database.child(nomeCapo).removeValue();
+                break;
             }
+        }
+    }
 
 
     public Capo getCapo(String nomeCapo) {
-            return elencoCapi.get(nomeCapo);
+        Capo capo = null;
+        for (int i = 0; i<elencoCapi.size(); i++){
+            if(nomeCapo == elencoCapi.get(i).getNomeCapo()) {
+                capo = elencoCapi.get(i);
             }
-
-
-    public List<Capo> getElencoCapi(Capo.Tipo tipo) {
-
-            ArrayList<Capo> risultato = new ArrayList<Capo>();
-
-            // Itero tutti gli elementi per cercare quelli che soddisfano il requisito richiesto
-            for (Map.Entry<String, Capo> elemento: elencoCapi.entrySet()) {
-            if (elemento.getValue().getTipo() == tipo)
-            risultato.add(elemento.getValue());
-            }
-            return risultato;
-        }
-
-        public List<Capo> getElencoCapi() {
-
-        ArrayList<Capo> risultato = new ArrayList<Capo>();
-
-        // Itero tutti gli elementi per cercare quelli che soddisfano il requisito richiesto
-        for (Map.Entry<String, Capo> elemento: elencoCapi.entrySet()) {
-
-                risultato.add(elemento.getValue());
-        }
-        return risultato;
+        }return capo;
     }
 
-// Popolo il data source con dati di prova
-private void popolaDataSource() {
 
-        ArrayList<Colore> listaprova = new ArrayList<>();
-        listaprova.add(new Colore("Nero", R.color.nero));
-        listaprova.add(new Colore("Bianco", R.color.bianco));
+        public List<Capo> getElencoCapi() {
+        return elencoCapi;
+    }
 
-        ArrayList<Colore> listaprova1 = new ArrayList<>();
-        listaprova1.add(new Colore ("Grigio",R.color.grigio));
-        listaprova1.add(new Colore("Bianco", R.color.bianco));
+    public void popolaDataSource(final ListView listView,final Context context,final CapiAdapter adapter) {
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                elencoCapi.clear();
+                for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                    elencoCapi.add(capo.getValue(Capo.class));
+                }
+                adapter.setElencoCapi(elencoCapi);
+                listView.setAdapter(adapter);
+            }
 
-        ArrayList<Colore> listaprova2 = new ArrayList<>();
-        listaprova2.add(new Colore("Bianco", R.color.bianco));
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        elencoCapi.put("Gucci limited edition", new Capo("Gucci limited edition", Maglia, AutunnoInverno, Elegante, listaprova, R.drawable.samplemaglia));
-        elencoCapi.put("H&M divided", new Capo("H&M divided", Pantalone, PrimaveraEstate, Sportivo, listaprova1, R.drawable.pantalone));
-        elencoCapi.put("Cortez", new Capo("Cortez", Scarpe, PrimaveraEstate, Elegante, listaprova2, R.drawable.scarpe));
-        elencoCapi.put("Adidas SuperStar", new Capo("Adidas SuperStar", Scarpe, PrimaveraEstate, Casual, listaprova , R.drawable.scarpe));
-        elencoCapi.put("Converse All Star", new Capo("Converse All Star", Scarpe, PrimaveraEstate, Casual, listaprova, R.drawable.scarpe));
-        elencoCapi.put("Nike Blazer", new Capo("Nike Blazer", Scarpe, PrimaveraEstate, Sportivo, listaprova1, R.drawable.scarpe));
-        elencoCapi.put("Superga", new Capo("Superga", Scarpe, PrimaveraEstate, Casual));
-        elencoCapi.put("Adidas", new Capo("Adidas", Pantalone, PrimaveraEstate, Sportivo));
-        }
+            }
+
+        });
+
+    }
 }

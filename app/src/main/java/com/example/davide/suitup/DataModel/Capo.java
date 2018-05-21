@@ -1,5 +1,7 @@
 package com.example.davide.suitup.DataModel;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -22,19 +24,19 @@ public class Capo implements Serializable{
     private Tipo tipo;
     private Stagione stagione;
     private Occasione occasione;
-    private int image;
+    //private Uri image;
     private ArrayList<Colore> colori= new ArrayList<Colore>();
 
     public Capo() {
     }
 
-    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori, int image) {
+    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori /*,Uri image*/) {
         this.nomeCapo = nomeCapo;
         this.tipo = tipo;
         this.stagione = stagione;
         this.occasione = occasione;
         this.colori = colori;
-        this.image = image;
+        //this.image = image;
     }
     public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione) {
         this.nomeCapo = nomeCapo;
@@ -95,11 +97,11 @@ public class Capo implements Serializable{
         this.colori = colori;
     }
 
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
-    }
+//    public Uri getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(Uri image) {
+//        this.image = image;
+//    }
 }

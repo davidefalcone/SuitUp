@@ -39,6 +39,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="107dp" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="107dp"
+        android:layout_height="103dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/textTipo"
         android:layout_width="wrap_content"

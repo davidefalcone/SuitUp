@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.example.davide.suitup.DataModel.Capo;
 import com.example.davide.suitup.DataModel.DataSource;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class ArmadioActivity extends AppCompatActivity {
@@ -29,11 +32,15 @@ public class ArmadioActivity extends AppCompatActivity {
     private Button vAggiungi;
 
     //Adapter e data source
-    private CapiAdapter adapter;
     private DataSource dataSource;
+    private CapiAdapter adapter;
+
+    //riferimento allo storage di firebase per l'eliminazione delle immagini
+    private StorageReference imagePath;
 
     //chiave per il passaggio di parametri alla nuova activity
     private final String EXTRA_CAPO = "capo";
+
 
     // Costanti con i result code
     private final int REQ_ADD_CAPO = 1;
@@ -49,17 +56,12 @@ public class ArmadioActivity extends AppCompatActivity {
 
         //recupero i riferimenti alle view
         vListaCapi = findViewById(R.id.listaCapi);
-        //vFiltra = findViewById(R.id.btnFiltra);
         vAggiungi = findViewById(R.id.btnAggiungi);
 
         // Riferimento al data source
         dataSource = DataSource.getInstance();
-
-        //Creo adapter
         adapter = new CapiAdapter(this, dataSource.getElencoCapi());
-
-        //Associo l'adapter alla list view
-        vListaCapi.setAdapter(adapter);
+        dataSource.popolaDataSource(vListaCapi, this, adapter);
 
         vAggiungi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,11 +104,9 @@ public class ArmadioActivity extends AppCompatActivity {
                     Capo capo = (Capo) data.getSerializableExtra(EXTRA_CAPO);
 
                     if(capo != null){
-
                         dataSource.addCapo(capo);
-
                         adapter.setElencoCapi(dataSource.getElencoCapi());
-                    }
+                        }
                 }
                 break;
 
@@ -135,6 +135,7 @@ public class ArmadioActivity extends AppCompatActivity {
                 // Eliminazione studente
                 dataSource.deleteCapo(adapter.getItem(info.position).getNomeCapo());
                 adapter.setElencoCapi(dataSource.getElencoCapi());
+                ImageDelete(adapter.getItem(info.position).getNomeCapo(), imagePath);
                 return true;
 
             case R.id.itemEdit:
@@ -159,7 +160,10 @@ public class ArmadioActivity extends AppCompatActivity {
         inflater.inflate(R.menu.lista_capi, menu);
     }
 
-
+public static void ImageDelete (String nomeCapo, StorageReference imagePath) {
+        imagePath = FirebaseStorage.getInstance().getReference();
+        imagePath.child(nomeCapo+".jpg").delete();
+}
 
 
 }
