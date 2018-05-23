@@ -14,11 +14,17 @@
     <string name="stagione">Stagione</string>
     <string name="itemEdit">Modifica Capo</string>
     <string name="itemDelete">Elimina Capo</string>
+    <string name="failedAuth">Autenticazione fallita</string>
+    <string name="successAuth">Benvenuto</string>
+    <string name="account_settings">Opzioni</string>
+    <string name="loading">Solo un secondo..</string>
     <string name="ok">OK</string>
     <string name="seleziona_colore">Seleziona un colore</string>
     <string name="occasione">Occasione</string>
     <string name="dati_obbligatori">Tutti i dati sono obbligatori!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="elimina">Vuoi eliminare il colore?</string>
+    <string name="effettuare_logout">Vuoi effettuare il log-out?</string>
     <string name="aggiungi_colore">Aggiungi Colore</string>
+    <string name="aggiungi_capo">Aggiungi Capo</string>
 </resources>

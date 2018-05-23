@@ -5,6 +5,8 @@ import android.widget.ListView;
 
 import com.example.davide.suitup.CapiAdapter;
 import com.example.davide.suitup.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,15 +31,14 @@ import static com.example.davide.suitup.DataModel.Capo.Tipo.Pantalone;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Scarpe;
 
 public class DataSource {
+    //riferimento all'user corrente
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     //riferiento al database
-    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference userStorage = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
     // Lista locale
     private ArrayList<Capo> elencoCapi;
-
-    //adapter
-    private CapiAdapter adapter;
 
     // Unica instanza
     private static DataSource instance = null;
@@ -56,14 +57,14 @@ public class DataSource {
 
 
     public void addCapo(Capo capo) {
-        database.child(capo.getNomeCapo()).setValue(capo);
+        userStorage.child(capo.getNomeCapo()).setValue(capo);
     }
 
 
     public void deleteCapo(String nomeCapo) {
         for (int i = 0; i<elencoCapi.size(); i++){
             if(nomeCapo == elencoCapi.get(i).getNomeCapo()) {
-                database.child(nomeCapo).removeValue();
+                userStorage.child(nomeCapo).removeValue();
                 break;
             }
         }
@@ -85,7 +86,7 @@ public class DataSource {
     }
 
     public void popolaDataSource(final ListView listView,final Context context,final CapiAdapter adapter) {
-        database.addValueEventListener(new ValueEventListener() {
+        userStorage.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 elencoCapi.clear();

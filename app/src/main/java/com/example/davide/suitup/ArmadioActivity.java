@@ -1,12 +1,23 @@
 package com.example.davide.suitup;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.StrictMode;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,29 +25,38 @@ import android.view.WindowManager;
 
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.davide.suitup.DataModel.Capo;
 import com.example.davide.suitup.DataModel.DataSource;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class ArmadioActivity extends AppCompatActivity {
 
     //Riferimenti alle view
     private ListView vListaCapi;
-    private Button vAggiungi;
+    private Toolbar vToolbar;
+    private ImageView vUserImage;
 
     //Adapter e data source
     private DataSource dataSource;
     private CapiAdapter adapter;
 
-    //riferimento allo storage di firebase per l'eliminazione delle immagini
-    private StorageReference imagePath;
+    private FirebaseUser user;
 
     //chiave per il passaggio di parametri alla nuova activity
     private final String EXTRA_CAPO = "capo";
@@ -54,25 +74,21 @@ public class ArmadioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_armadio);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         //recupero i riferimenti alle view
         vListaCapi = findViewById(R.id.listaCapi);
-        vAggiungi = findViewById(R.id.btnAggiungi);
+        vToolbar = findViewById(R.id.my_toolbar);
 
         // Riferimento al data source
         dataSource = DataSource.getInstance();
         adapter = new CapiAdapter(this, dataSource.getElencoCapi());
         dataSource.popolaDataSource(vListaCapi, this, adapter);
 
-        vAggiungi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditCapoActivity.class);
-                startActivityForResult(intent, REQ_ADD_CAPO);
-                }
-        });
-
         registerForContextMenu(vListaCapi);
 
+        //imposto la toolbar
+        setToolbar();
 
         //Imposto il listner per il click sulla listview
 
@@ -93,7 +109,48 @@ public class ArmadioActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //faccio inflate per creare gli item della tollbar
+        getMenuInflater().inflate(R.menu.action_bar_items, menu);
+        //cerco la vieo account setting
+        final MenuItem alertMenuItem = menu.findItem(R.id.account_settings);
+        //ottengo il riferimento a tale view
+        ConstraintLayout v = (ConstraintLayout) alertMenuItem.getActionView();
+        //ottengo il riferimento all'immagine dentro la view
+        vUserImage = v.findViewById(R.id.imageUser);
+        //inserisco la fto dell'utente dentro l'imageview
+        GlideApp.with(this).load(user.getPhotoUrl()).into(vUserImage);
+        vUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createDialog();
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.filtra:
+                // l'utente ha scelto filtra
+                return true;
+
+            case R.id.aggiungi_capo:
+                // l'utente intende aggiungere un nuovo capo
+                Intent intent = new Intent(getApplicationContext(), EditCapoActivity.class);
+                startActivityForResult(intent, REQ_ADD_CAPO);
+                return true;
+
+                default:
+                //se ne occupa la superclasse (l'ho letto sulla documentazione)
+                return super.onOptionsItemSelected(item);
+
+        }
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -132,16 +189,17 @@ public class ArmadioActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.itemDelete:
-                // Eliminazione studente
+                // Eliminazione capo
                 dataSource.deleteCapo(adapter.getItem(info.position).getNomeCapo());
                 adapter.setElencoCapi(dataSource.getElencoCapi());
-                ImageDelete(adapter.getItem(info.position).getNomeCapo(), imagePath);
+                //quando rimuovo un capo, elimino la relativa foto nello storage
+                ImageDelete(adapter.getItem(info.position).getNomeCapo());
                 return true;
 
             case R.id.itemEdit:
-                // Modifica studente. Chiedo lo studente all'adapter e lo passo all'altra activiy
+                // Modifica capo
                 Capo capo = adapter.getItem(info.position);
-                nomeCorrente = capo.getNomeCapo();    // Salvo la matricola per poterla eventualmente modificare
+                nomeCorrente = capo.getNomeCapo();
                 Intent intent = new Intent(getApplicationContext(), EditCapoActivity.class);
                 intent.putExtra(EXTRA_CAPO, capo);
                 // Faccio partire l'activiy in modalità edit
@@ -160,11 +218,42 @@ public class ArmadioActivity extends AppCompatActivity {
         inflater.inflate(R.menu.lista_capi, menu);
     }
 
-public static void ImageDelete (String nomeCapo, StorageReference imagePath) {
-        imagePath = FirebaseStorage.getInstance().getReference();
+    public void ImageDelete (String nomeCapo) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        StorageReference imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
         imagePath.child(nomeCapo+".jpg").delete();
 }
 
+    public void setToolbar(){
+        setSupportActionBar(vToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+    }
+
+    private void createDialog(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(ArmadioActivity.this);
+        alert.setTitle(R.string.effettuare_logout);
+        alert.setView(R.layout.empty_fragment);
+
+        //imposto i pulsanti ok e annulla
+        alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(ArmadioActivity.this, GoogleSignInActivity.class);
+                startActivity(intent);
+            }
+        });
+        alert.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        //mostro il popup
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+    }
 
 }
 

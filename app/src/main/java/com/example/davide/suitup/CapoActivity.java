@@ -19,6 +19,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.davide.suitup.DataModel.Capo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import android.support.v4.app.Fragment;
@@ -31,6 +33,7 @@ public class CapoActivity extends AppCompatActivity {
     //adapter
     private CapoColoriAdapter adapter;
     private StorageReference imagePath;
+    private FirebaseUser user;
 
     //creo i riferimenti alle view
     private ImageView vImageview;
@@ -52,7 +55,8 @@ public class CapoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capo);
 
-        imagePath = FirebaseStorage.getInstance().getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
 
         //imposto i riferimenti alle view
         vImageview = findViewById(R.id.imageCapo);

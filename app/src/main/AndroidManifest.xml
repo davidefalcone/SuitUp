@@ -14,14 +14,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/tema">
-        <activity android:name=".LogoActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:theme="@style/AppTheme">
+        <activity android:name=".LogoActivity"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".CapoActivity" />
         <activity android:name=".AbbinamentoActivity" />
 
@@ -31,7 +26,13 @@
 
         <activity android:name=".ArmadioActivity" />
         <activity android:name=".EditCapoActivity" />
-        <activity android:name=".GoogleSignInActivity"></activity>
+        <activity android:name=".GoogleSignInActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
     </application>
 
 </manifest>

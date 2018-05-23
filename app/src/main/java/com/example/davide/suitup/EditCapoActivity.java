@@ -45,7 +45,7 @@ public class EditCapoActivity extends AppCompatActivity {
     private EditColoriAdapter coloriAdapter = new EditColoriAdapter();
     private ArrayList<Colore> listaColori = Colore.Tuttiicolori();
     private Capo capo;
-    private StorageReference storage = FirebaseStorage.getInstance().getReference();
+    private FirebaseUser user;
     private StorageReference imagePath;
     private Bitmap immagineAttuale;
     //TAG
@@ -90,21 +90,16 @@ public class EditCapoActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress);
         progressBar.setVisibility(View.GONE);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
+
+        //metto nell'imageview una foto vuota
         immagineAttuale = BitmapFactory.decodeResource(getResources(), R.drawable.emptyimage);
         vImage.setImageBitmap(immagineAttuale);
         //vImage.setTag(EMPTY);
 
-        //riferimento al fragment
-        fm = getSupportFragmentManager();
-        fragment = fm.findFragmentById(R.id.fragmentContainer);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-
-        //inizializzo il fragment con la classe Horizontal list view
-        if (fragment == null ) {
-            fragment = new HorizontalListViewFragment();
-            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
-        }
+        //imposto il fragment
+        setFragment();
 
         //imposto la posizione del pulsante aggiungi colore
 
@@ -128,9 +123,8 @@ public class EditCapoActivity extends AppCompatActivity {
             vTipo.setSelection(capo.getTipo().ordinal());
             vStagione.setSelection(capo.getStagione().ordinal());
             vOccasione.setSelection(capo.getOccasione().ordinal());
-            imagePath = storage.child(capo.getNomeCapo()+".jpg");
-            GlideApp.with(this).load(imagePath).diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true) .into(vImage);
+            GlideApp.with(this).load(imagePath.child(capo.getNomeCapo()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(vImage);
             //vImage.setTag(NO_EMPTY);
             coloriAdapter = new EditColoriAdapter(capo.getColori());
             listaColori.clear();
@@ -144,7 +138,7 @@ public class EditCapoActivity extends AppCompatActivity {
         vAggiungi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AggiungiColore();
+                aggiungiColore();
             }
         });
 
@@ -191,8 +185,7 @@ public class EditCapoActivity extends AppCompatActivity {
         capo.setOccasione(Capo.Occasione.values()[vOccasione.getSelectedItemPosition()]);
         capo.setColori(coloriAdapter.getListaColori());
         if(capo.getNomeCapo().length()>=1 && capo.getColori().size()>=1 && !(vImage.getId() == (int)R.drawable.emptyimage)){
-                ArmadioActivity.ImageDelete(capo.getNomeCapo(), imagePath);
-                UploadImage();
+                uploadImage();
                 return capo;
             }
         else return null;
@@ -266,20 +259,22 @@ public class EditCapoActivity extends AppCompatActivity {
 
         startActivityForResult(galleryIntent, GALLERY);
     }
+
     private void scegliDallaFotocamera() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA);
     }
+
     private void rimuovi(){
         vImage.setImageResource(R.drawable.emptyimage);
         //vImage.setTag(EMPTY);
     }
 
-    private void AggiungiColore(){
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+    private void aggiungiColore(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(EditCapoActivity.this);
         alert.setTitle(R.string.seleziona_colore);
         alert.setView(R.layout.fragment_scegli_colore);
-        final ColoriAdapter adapter = new ColoriAdapter(listaColori, getApplicationContext());
+        ColoriAdapter adapter = new ColoriAdapter(listaColori, getApplicationContext());
         alert.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
@@ -293,17 +288,16 @@ public class EditCapoActivity extends AppCompatActivity {
         });
 
         //mostro il popup
-        final AlertDialog alertDialog = alert.create();
+        AlertDialog alertDialog = alert.create();
         alertDialog.show();
     }
 
-    private void UploadImage(){
-        imagePath = storage.child(capo.getNomeCapo()+".jpg");
-        imagePath.delete();
+    private void uploadImage(){
+        imagePath.child(capo.getNomeCapo()+".jpg").delete();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagineAttuale.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-        UploadTask uploadTask = imagePath.putBytes(data);
+        UploadTask uploadTask = imagePath.child(capo.getNomeCapo()+".jpg").putBytes(data);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -316,6 +310,20 @@ public class EditCapoActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    public void setFragment (){
+        //riferimento al fragment
+        fm = getSupportFragmentManager();
+        fragment = fm.findFragmentById(R.id.fragmentContainer);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+
+        //inizializzo il fragment con la classe Horizontal list view
+        if (fragment == null ) {
+            fragment = new HorizontalListViewFragment();
+            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+        }
     }
 
 }

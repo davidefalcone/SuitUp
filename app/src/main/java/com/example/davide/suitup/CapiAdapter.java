@@ -21,14 +21,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.davide.suitup.DataModel.Capo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CapiAdapter extends BaseAdapter {
@@ -36,12 +32,13 @@ public class CapiAdapter extends BaseAdapter {
     private Context context;
     private List<Capo> elencoCapi;
     private StorageReference imagePath;
-
+    private FirebaseUser user;
 
     public CapiAdapter(Context context, List<Capo> elencoCapi) {
         this.context = context;
         this.elencoCapi = elencoCapi;
-        imagePath = FirebaseStorage.getInstance().getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
     }
 
 
