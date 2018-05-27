@@ -1,6 +1,7 @@
 package com.example.davide.suitup;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -17,6 +18,7 @@ import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,9 +26,13 @@ import android.view.View;
 import android.view.WindowManager;
 
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -136,6 +142,7 @@ public class ArmadioActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.filtra:
                 // l'utente ha scelto filtra
+                createFilter();
                 return true;
 
             case R.id.aggiungi_capo:
@@ -180,7 +187,7 @@ public class ArmadioActivity extends AppCompatActivity {
                 }
         }
     }
-    // Selezione di un elemento nel context menu
+
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
@@ -242,6 +249,96 @@ public class ArmadioActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(ArmadioActivity.this, GoogleSignInActivity.class);
                 startActivity(intent);
+            }
+        });
+        alert.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        //mostro il popup
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
+    }
+
+    private void createFilter() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(ArmadioActivity.this);
+        alert.setTitle(R.string.filtra_ricerca);
+        alert.setMessage(R.string.ricerca_per);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.filtro_layout, null);
+        alert.setView(view);
+
+        //riferimenti alle view nel dialog
+        final CheckBox vCheckTipo = view.findViewById(R.id.checkTipo);
+        final CheckBox vCheckOccasione = view.findViewById(R.id.checkOccasione);
+        final CheckBox vCheckStagione = view.findViewById(R.id.checkStagione);
+        final Spinner vSpinnerTipo = view.findViewById(R.id.spinnerTipo);
+        final Spinner vSpinnerOccasione = view.findViewById(R.id.spinnerOccasione);
+        final Spinner vSpinnerStagione = view.findViewById(R.id.spinnerStagione);
+        final boolean checked[] = new boolean[3];
+
+        //oscuro gli spinner
+        vSpinnerTipo.setVisibility(View.INVISIBLE);
+        vSpinnerOccasione.setVisibility(View.INVISIBLE);
+        vSpinnerStagione.setVisibility(View.INVISIBLE);
+
+        //imposto gli spinner
+        final ArrayAdapter<Capo.Tipo> tipoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Tipo.values());
+        vSpinnerTipo.setAdapter(tipoAdapter);
+        final ArrayAdapter<Capo.Occasione> occasioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Occasione.values());
+        vSpinnerOccasione.setAdapter(occasioneAdapter);
+        final ArrayAdapter<Capo.Stagione> stagioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Stagione.values());
+        vSpinnerStagione.setAdapter(stagioneAdapter);
+
+        vCheckTipo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    vSpinnerTipo.setVisibility(View.VISIBLE);
+                else vSpinnerTipo.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        vCheckOccasione.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    vSpinnerOccasione.setVisibility(View.VISIBLE);
+                else vSpinnerOccasione.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        vCheckStagione.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    vSpinnerStagione.setVisibility(View.VISIBLE);
+                else vSpinnerStagione.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        //imposto i pulsanti applica e annulla
+        alert.setPositiveButton(R.string.applica, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Filtro filtro = Filtro.getInstance();
+                if(checked[0] = vCheckTipo.isChecked())
+                    filtro.setTipo((Capo.Tipo)vSpinnerTipo.getSelectedItem());
+                else filtro.setTipo(null);
+
+                if(checked[1] = vCheckOccasione.isChecked())
+                    filtro.setOccasione((Capo.Occasione)vSpinnerOccasione.getSelectedItem());
+                else filtro.setOccasione(null);
+
+                if(checked[2] = vCheckStagione.isChecked())
+                    filtro.setStagione((Capo.Stagione)vSpinnerStagione.getSelectedItem());
+                else filtro.setStagione(null);
+
+                filtro.setChecked(checked);
+                dataSource.filtraRicerca(vListaCapi,ArmadioActivity.this, adapter);
             }
         });
         alert.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {

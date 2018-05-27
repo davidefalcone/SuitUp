@@ -101,16 +101,8 @@ public class EditCapoActivity extends AppCompatActivity {
         //imposto il fragment
         setFragment();
 
-        //imposto la posizione del pulsante aggiungi colore
-
-
         //imposto gli spinner
-        final ArrayAdapter<Capo.Tipo> tipoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Tipo.values());
-        vTipo.setAdapter(tipoAdapter);
-        final ArrayAdapter<Capo.Occasione> occasioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Occasione.values());
-        vOccasione.setAdapter(occasioneAdapter);
-        final ArrayAdapter<Capo.Stagione> stagioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Stagione.values());
-        vStagione.setAdapter(stagioneAdapter);
+        setSpinner();
 
         //ottengo i dati passati da lista capi activity
         final Intent intent = getIntent();
@@ -312,7 +304,7 @@ public class EditCapoActivity extends AppCompatActivity {
         });
     }
 
-    public void setFragment (){
+    private void setFragment (){
         //riferimento al fragment
         fm = getSupportFragmentManager();
         fragment = fm.findFragmentById(R.id.fragmentContainer);
@@ -326,4 +318,12 @@ public class EditCapoActivity extends AppCompatActivity {
         }
     }
 
+    private void setSpinner(){
+        final ArrayAdapter<Capo.Tipo> tipoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Tipo.values());
+        vTipo.setAdapter(tipoAdapter);
+        final ArrayAdapter<Capo.Occasione> occasioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Occasione.values());
+        vOccasione.setAdapter(occasioneAdapter);
+        final ArrayAdapter<Capo.Stagione> stagioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Stagione.values());
+        vStagione.setAdapter(stagioneAdapter);
+    }
 }

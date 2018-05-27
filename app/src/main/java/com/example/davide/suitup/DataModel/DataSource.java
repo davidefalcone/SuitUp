@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ListView;
 
 import com.example.davide.suitup.CapiAdapter;
+import com.example.davide.suitup.Filtro;
 import com.example.davide.suitup.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,9 +82,234 @@ public class DataSource {
     }
 
 
-        public List<Capo> getElencoCapi() {
+    public List<Capo> getElencoCapi() {
         return elencoCapi;
     }
+
+    public void filtraRicerca(final  ListView listView, Context context,final CapiAdapter adapter){
+        final Filtro filtro = Filtro.getInstance();
+        final boolean checked[] = filtro.getChecked();
+        int n = (checked[0] ? 4 : 0) + (checked[1] ? 2 : 0) + (checked[2] ? 1 : 0);
+        switch (n) {
+            case 0:
+                //l'utente non ha settato nessun flag
+                userStorage.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        elencoCapi.clear();
+                        for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                            elencoCapi.add(capo.getValue(Capo.class));
+                        }
+                        adapter.setElencoCapi(elencoCapi);
+                        listView.setAdapter(adapter);
+                        filtro.setTipo(null);
+                        filtro.setOccasione(null);
+                        filtro.setStagione(null);
+                        for (int i = 0;i<3;i++)
+                            checked[i] = false;
+                        filtro.setChecked(checked);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+                break;
+
+            case 1:
+                //solo stagione
+                userStorage.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        elencoCapi.clear();
+                        for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                            if(capo.getValue(Capo.class).getStagione() == filtro.getStagione())
+                            elencoCapi.add(capo.getValue(Capo.class));
+                        }
+                        adapter.setElencoCapi(elencoCapi);
+                        listView.setAdapter(adapter);
+                        filtro.setTipo(null);
+                        filtro.setOccasione(null);
+                        filtro.setStagione(null);
+                        for (int i = 0;i<3;i++)
+                            checked[i] = false;
+                        filtro.setChecked(checked);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+                break;
+            case 2:
+                //solo occasione
+                userStorage.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        elencoCapi.clear();
+                        for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                            if(capo.getValue(Capo.class).getOccasione() == filtro.getOccasione())
+                            elencoCapi.add(capo.getValue(Capo.class));
+                        }
+                        adapter.setElencoCapi(elencoCapi);
+                        listView.setAdapter(adapter);
+                        filtro.setTipo(null);
+                        filtro.setOccasione(null);
+                        filtro.setStagione(null);
+                        for (int i = 0;i<3;i++)
+                            checked[i] = false;
+                        filtro.setChecked(checked);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+                break;
+            case 3:
+                //occasione e stagione
+                userStorage.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        elencoCapi.clear();
+                        for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                            if (capo.getValue(Capo.class).getOccasione() == filtro.getOccasione() && capo.getValue(Capo.class).getStagione() == filtro.getStagione())
+                            elencoCapi.add(capo.getValue(Capo.class));
+                        }
+                        adapter.setElencoCapi(elencoCapi);
+                        listView.setAdapter(adapter);
+                        filtro.setTipo(null);
+                        filtro.setOccasione(null);
+                        filtro.setStagione(null);
+                        for (int i = 0;i<3;i++)
+                            checked[i] = false;
+                        filtro.setChecked(checked);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+                break;
+            case 4:
+                //solo tipo
+                userStorage.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        elencoCapi.clear();
+                        for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                            if(capo.getValue(Capo.class).getTipo() == filtro.getTipo())
+                            elencoCapi.add(capo.getValue(Capo.class));
+                        }
+                        adapter.setElencoCapi(elencoCapi);
+                        listView.setAdapter(adapter);
+                        filtro.setTipo(null);
+                        filtro.setOccasione(null);
+                        filtro.setStagione(null);
+                        for (int i = 0;i<3;i++)
+                            checked[i] = false;
+                        filtro.setChecked(checked);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+                break;
+            case 5:
+                //tipo e stagione
+                userStorage.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        elencoCapi.clear();
+                        for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                            if(capo.getValue(Capo.class).getTipo() == filtro.getTipo() && capo.getValue(Capo.class).getStagione() == filtro.getStagione())
+                            elencoCapi.add(capo.getValue(Capo.class));
+                        }
+                        adapter.setElencoCapi(elencoCapi);
+                        listView.setAdapter(adapter);
+                        filtro.setTipo(null);
+                        filtro.setOccasione(null);
+                        filtro.setStagione(null);
+                        for (int i = 0;i<3;i++)
+                            checked[i] = false;
+                        filtro.setChecked(checked);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+                break;
+            case 6:
+                //tipo e occasione
+                userStorage.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        elencoCapi.clear();
+                        for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                            if(capo.getValue(Capo.class).getTipo() == filtro.getTipo() && capo.getValue(Capo.class).getOccasione() == filtro.getOccasione())
+                            elencoCapi.add(capo.getValue(Capo.class));
+                        }
+                        adapter.setElencoCapi(elencoCapi);
+                        listView.setAdapter(adapter);
+                        filtro.setTipo(null);
+                        filtro.setOccasione(null);
+                        filtro.setStagione(null);
+                        for (int i = 0;i<3;i++)
+                            checked[i] = false;
+                        filtro.setChecked(checked);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+                break;
+                case 7 :
+                //tutti flaggati
+                    userStorage.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            elencoCapi.clear();
+                            for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                                if(capo.getValue(Capo.class).getTipo() == filtro.getTipo() && capo.getValue(Capo.class).getOccasione() == filtro.getOccasione() && capo.getValue(Capo.class).getStagione() == filtro.getStagione())
+                                elencoCapi.add(capo.getValue(Capo.class));
+                            }
+                            adapter.setElencoCapi(elencoCapi);
+                            listView.setAdapter(adapter);
+                            filtro.setTipo(null);
+                            filtro.setOccasione(null);
+                            filtro.setStagione(null);
+                            for (int i = 0;i<3;i++)
+                                checked[i] = false;
+                            filtro.setChecked(checked);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+                    });
+                    break;
+        }
+
+       }
 
     public void popolaDataSource(final ListView listView,final Context context,final CapiAdapter adapter) {
         userStorage.addValueEventListener(new ValueEventListener() {
@@ -105,4 +331,6 @@ public class DataSource {
         });
 
     }
+
+
 }

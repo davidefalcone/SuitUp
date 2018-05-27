@@ -64,5 +64,9 @@ public class Colore implements Serializable{
         lista.add(new Colore("Marrone", R.color.marrone));
         return lista;
     }
+
+    public static ArrayList<Colore> coloriAbbinabili (ArrayList<Colore>){
+
+    }
 }
 

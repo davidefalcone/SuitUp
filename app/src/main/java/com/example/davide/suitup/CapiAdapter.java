@@ -71,7 +71,7 @@ public class CapiAdapter extends BaseAdapter {
         Capo capo = elencoCapi.get(i);
 
         vNomecapo.setText(capo.getNomeCapo());
-        vTipo.setText(capo.getTipo().toString());
+        vTipo.setText(capo.getOccasione() + " • " + capo.getStagione());
         progressBar.setVisibility(view.VISIBLE);
         GlideApp.with(context).load(imagePath.child(capo.getNomeCapo()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true).listener(new RequestListener<Drawable>() {
