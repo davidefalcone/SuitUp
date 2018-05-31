@@ -1,8 +1,10 @@
 package com.example.davide.suitup.DataModel;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 
+import com.example.davide.suitup.AbbinamentiAdapter;
 import com.example.davide.suitup.CapiAdapter;
 import com.example.davide.suitup.Filtro;
 import com.example.davide.suitup.R;
@@ -30,6 +32,7 @@ import static com.example.davide.suitup.DataModel.Capo.Tipo.Felpa;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Maglia;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Pantalone;
 import static com.example.davide.suitup.DataModel.Capo.Tipo.Scarpe;
+import static com.example.davide.suitup.DataModel.Colore.coloriAbbinabili;
 
 public class DataSource {
     //riferimento all'user corrente
@@ -86,7 +89,7 @@ public class DataSource {
         return elencoCapi;
     }
 
-    public void filtraRicerca(final  ListView listView, Context context,final CapiAdapter adapter){
+    public void filtraRicerca(final  ListView listView,final CapiAdapter adapter){
         final Filtro filtro = Filtro.getInstance();
         final boolean checked[] = filtro.getChecked();
         int n = (checked[0] ? 4 : 0) + (checked[1] ? 2 : 0) + (checked[2] ? 1 : 0);
@@ -311,7 +314,7 @@ public class DataSource {
 
        }
 
-    public void popolaDataSource(final ListView listView,final Context context,final CapiAdapter adapter) {
+    public void popolaDataSource(final ListView listView,final CapiAdapter adapter) {
         userStorage.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -329,6 +332,29 @@ public class DataSource {
             }
 
         });
+
+    }
+
+    public void cercaCapiAbbinabili (final RecyclerView recyclerView, final Capo.Tipo tipo, final ArrayList<Colore> colori, final Context context, final Capo.Stagione stagione, final Capo.Occasione occasione){
+
+        userStorage.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                elencoCapi = new ArrayList<Capo>();
+                for (DataSnapshot capo : dataSnapshot.getChildren()) {
+                    if(capo.getValue(Capo.class).getTipo() == tipo && coloriAbbinabili(colori, capo.getValue(Capo.class).getColori()) && occasione == capo.getValue(Capo.class).getOccasione() && stagione == capo.getValue(Capo.class).getStagione())
+                        elencoCapi.add(capo.getValue(Capo.class));
+                    }
+                    AbbinamentiAdapter adapter = new AbbinamentiAdapter(context);
+                    adapter.setListaAbbinamenti(elencoCapi);
+                    recyclerView.setAdapter(adapter);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
     }
 

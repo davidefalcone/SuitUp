@@ -1,6 +1,8 @@
 package com.example.davide.suitup;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
@@ -8,8 +10,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -19,13 +23,14 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.davide.suitup.DataModel.Capo;
+import com.example.davide.suitup.DataModel.Outfit;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import android.support.v4.app.Fragment;
 
-
+import java.util.ArrayList;
 
 
 public class CapoActivity extends AppCompatActivity {
@@ -69,13 +74,13 @@ public class CapoActivity extends AppCompatActivity {
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
 
         if (fragment == null) {
-            fragment = new HorizontalListViewFragment();
+            fragment = new HorizontalListViewColoriFragment();
             fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
         }
 
         //ottengo i dati forniti dall'activity precedente
         final Intent intent = getIntent();
-        Capo capo = (Capo) intent.getSerializableExtra(EXTRA_CAPO);
+        final Capo capo = (Capo) intent.getSerializableExtra(EXTRA_CAPO);
 
         if (capo != null) {
             vNomeCapo.setText(capo.getNomeCapo());
@@ -101,6 +106,17 @@ public class CapoActivity extends AppCompatActivity {
                 bundle.putSerializable(EXTRA_COLORI, adapter);
             fragment.setArguments(bundle);
         }
+
+        vAbbina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(CapoActivity.this, AbbinamentoActivity.class);
+                intent.putExtra(EXTRA_CAPO, capo);
+                startActivity(intent);
+
+            }
+        });
 
     }
 }

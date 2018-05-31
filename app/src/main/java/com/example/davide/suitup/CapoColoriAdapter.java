@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class CapoColoriAdapter extends RecyclerView.Adapter<ViewHolder> implements Serializable {
+public class CapoColoriAdapter extends RecyclerView.Adapter<ColoriViewHolder> implements Serializable {
 
     //attributi
     protected ArrayList<Colore> listaColori;
@@ -29,19 +29,18 @@ public class CapoColoriAdapter extends RecyclerView.Adapter<ViewHolder> implemen
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ColoriViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycle_items, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        ColoriViewHolder holder = new ColoriViewHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull ColoriViewHolder holder, int i) {
 
         holder.vColoreImage.setImageResource(listaColori.get(i).getImageResourceId());
-
     }
 
 

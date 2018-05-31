@@ -2,8 +2,6 @@ package com.example.davide.suitup;
 
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,13 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.davide.suitup.DataModel.Capo;
-import com.example.davide.suitup.DataModel.Colore;
-
-import java.util.ArrayList;
 
 
-public class HorizontalListViewFragment extends Fragment {
+public class HorizontalListViewColoriFragment extends Fragment {
 
     //riferimenti alle view
     private RecyclerView recyclerView;
@@ -27,7 +21,7 @@ public class HorizontalListViewFragment extends Fragment {
 
 
 
-    public HorizontalListViewFragment () {
+    public HorizontalListViewColoriFragment () {
         // Required empty public constructor
     }
 

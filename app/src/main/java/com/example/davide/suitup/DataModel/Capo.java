@@ -1,14 +1,12 @@
 package com.example.davide.suitup.DataModel;
 
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Capo implements Serializable{
 
 
-    public enum Tipo  {Maglia, Pantalone, Scarpe, Felpa, Giacca, Abito, Camicia, Gonna, Jeans };
+    public enum Tipo  {Maglia, Pantalone, Scarpe, Felpa, Giacca, Abito, Camicia, Gonna };
     public enum Stagione  {
         PrimaveraEstate, AutunnoInverno;
 
@@ -24,13 +22,12 @@ public class Capo implements Serializable{
     private Tipo tipo;
     private Stagione stagione;
     private Occasione occasione;
-    //private Uri image;
     private ArrayList<Colore> colori= new ArrayList<Colore>();
 
     public Capo() {
     }
 
-    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori /*,Uri image*/) {
+    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori ) {
         this.nomeCapo = nomeCapo;
         this.tipo = tipo;
         this.stagione = stagione;
@@ -97,11 +94,4 @@ public class Capo implements Serializable{
         this.colori = colori;
     }
 
-//    public Uri getImage() {
-//        return image;
-//    }
-//
-//    public void setImage(Uri image) {
-//        this.image = image;
-//    }
 }

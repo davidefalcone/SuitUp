@@ -6,28 +6,171 @@
     android:layout_height="match_parent"
     tools:context=".AbbinamentoActivity">
 
-    <TextView
-        android:id="@+id/textAbbinamento"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/puoi_abbinare_i_seguenti_capi"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ListView
-        android:id="@+id/listaAbbinamenti"
-        android:layout_width="368dp"
-        android:layout_height="524dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textAbbinamento"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="223dp">
+
+
+            <TextView
+                android:id="@+id/textMaglie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/candal"
+                android:text="@string/maglie"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaMaglie"
+                android:layout_width="324dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteX="52dp"
+                tools:layout_editor_absoluteY="62dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/textPantaloni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/candal"
+                android:text="@string/pantaloni"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp"
+                tools:layout_editor_absoluteX="36dp"
+                tools:layout_editor_absoluteY="226dp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaPantaloni"
+                android:layout_width="324dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/textScarpe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/candal"
+                android:text="@string/scarpe"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp"
+                tools:layout_editor_absoluteX="162dp"
+                tools:layout_editor_absoluteY="464dp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaScarpe"
+                android:layout_width="324dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/textGiacche"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/candal"
+                android:text="@string/giacche"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaGiacche"
+                android:layout_width="324dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textGonne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/candal"
+                android:text="@string/gonne"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaGonne"
+                android:layout_marginStart="8dp"
+                android:layout_width="324dp"
+                android:layout_height="match_parent" >
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/textAbiti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/candal"
+                android:text="@string/abiti"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaAbiti"
+                android:layout_marginStart="8dp"
+                android:layout_width="324dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textCamicie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/camicie"
+                android:fontFamily="@font/candal"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaCamicie"
+                android:layout_width="324dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textFelpa"
+                android:layout_width="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/candal"
+                android:text="@string/felpe"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listaFelpe"
+                android:layout_width="324dp"
+                android:layout_marginStart="8dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

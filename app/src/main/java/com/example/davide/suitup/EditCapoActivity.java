@@ -1,6 +1,7 @@
 package com.example.davide.suitup;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.ViewTarget;
 import com.example.davide.suitup.DataModel.Capo;
 import com.example.davide.suitup.DataModel.Colore;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +49,6 @@ public class EditCapoActivity extends AppCompatActivity {
     private Capo capo;
     private FirebaseUser user;
     private StorageReference imagePath;
-    private Bitmap immagineAttuale;
     //TAG
     private final String EMPTY = "empty";
     private final String NO_EMPTY = "no_empty";
@@ -94,9 +95,8 @@ public class EditCapoActivity extends AppCompatActivity {
         imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
 
         //metto nell'imageview una foto vuota
-        immagineAttuale = BitmapFactory.decodeResource(getResources(), R.drawable.emptyimage);
-        vImage.setImageBitmap(immagineAttuale);
-        //vImage.setTag(EMPTY);
+        vImage.setImageResource(R.drawable.emptyimage);
+        vImage.setTag(EMPTY);
 
         //imposto il fragment
         setFragment();
@@ -117,7 +117,7 @@ public class EditCapoActivity extends AppCompatActivity {
             vOccasione.setSelection(capo.getOccasione().ordinal());
             GlideApp.with(this).load(imagePath.child(capo.getNomeCapo()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true).into(vImage);
-            //vImage.setTag(NO_EMPTY);
+            vImage.setTag(NO_EMPTY);
             coloriAdapter = new EditColoriAdapter(capo.getColori());
             listaColori.clear();
             listaColori = Colore.ColoriRimanenti(capo);
@@ -176,7 +176,7 @@ public class EditCapoActivity extends AppCompatActivity {
         capo.setStagione(Capo.Stagione.values()[vStagione.getSelectedItemPosition()]);
         capo.setOccasione(Capo.Occasione.values()[vOccasione.getSelectedItemPosition()]);
         capo.setColori(coloriAdapter.getListaColori());
-        if(capo.getNomeCapo().length()>=1 && capo.getColori().size()>=1 && !(vImage.getId() == (int)R.drawable.emptyimage)){
+        if(capo.getNomeCapo().length()>=1 && capo.getColori().size()>=1 && vImage.getTag()==NO_EMPTY){
                 uploadImage();
                 return capo;
             }
@@ -194,9 +194,8 @@ public class EditCapoActivity extends AppCompatActivity {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    immagineAttuale = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    vImage.setImageBitmap(immagineAttuale);
-                   // vImage.setTag(NO_EMPTY);
+                    vImage.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI));
+                    vImage.setTag(NO_EMPTY);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -205,9 +204,8 @@ public class EditCapoActivity extends AppCompatActivity {
             }
 
         } else if (requestCode == CAMERA) {
-            immagineAttuale = (Bitmap) data.getExtras().get("data");
-            vImage.setImageBitmap(immagineAttuale);
-           // vImage.setTag(NO_EMPTY);
+            vImage.setImageBitmap((Bitmap) data.getExtras().get("data"));
+            vImage.setTag(NO_EMPTY);
         }
     }
 
@@ -259,7 +257,7 @@ public class EditCapoActivity extends AppCompatActivity {
 
     private void rimuovi(){
         vImage.setImageResource(R.drawable.emptyimage);
-        //vImage.setTag(EMPTY);
+        vImage.setTag(EMPTY);
     }
 
     private void aggiungiColore(){
@@ -287,7 +285,8 @@ public class EditCapoActivity extends AppCompatActivity {
     private void uploadImage(){
         imagePath.child(capo.getNomeCapo()+".jpg").delete();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagineAttuale.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        Bitmap bitmap = ((BitmapDrawable)vImage.getDrawable()).getBitmap();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
         UploadTask uploadTask = imagePath.child(capo.getNomeCapo()+".jpg").putBytes(data);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -313,7 +312,7 @@ public class EditCapoActivity extends AppCompatActivity {
 
         //inizializzo il fragment con la classe Horizontal list view
         if (fragment == null ) {
-            fragment = new HorizontalListViewFragment();
+            fragment = new HorizontalListViewColoriFragment();
             fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
         }
     }
@@ -325,5 +324,12 @@ public class EditCapoActivity extends AppCompatActivity {
         vOccasione.setAdapter(occasioneAdapter);
         final ArrayAdapter<Capo.Stagione> stagioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Stagione.values());
         vStagione.setAdapter(stagioneAdapter);
+    }
+}
+
+class App extends Application {
+    @Override public void onCreate() {
+        super.onCreate();
+        ViewTarget.setTagId(R.id.glide_tag);
     }
 }

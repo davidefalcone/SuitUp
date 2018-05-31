@@ -5,7 +5,7 @@
     <string name="colori">Colori</string>
     <string name="abbina">Abbina</string>
     <string name="log_in">Log In</string>
-    <string name="puoi_abbinare_i_seguenti_capi">Puoi abbinare i seguenti capi</string>
+    <string name="cosa_vuoi_abbinare">Cosa vuoi abbinare?</string>
     <string name="app_name">SuitUp!</string>
     <string name="armadio">ARMADIO</string>
     <string name="nome">Nome</string>
@@ -30,4 +30,13 @@
     <string name="effettuare_logout">Vuoi effettuare il log-out?</string>
     <string name="aggiungi_colore">Aggiungi Colore</string>
     <string name="aggiungi_capo">Aggiungi Capo</string>
+    <string name="maglie">Maglie</string>
+    <string name="pantaloni">Pantaloni</string>
+    <string name="scarpe">Scarpe</string>
+    <string name="felpe">Felpe</string>
+    <string name="giacche">Giacche</string>
+    <string name="abiti">Abito</string>
+    <string name="camicie">Camicie</string>
+    <string name="gonne">Gonne</string>
+    <item type="id" name="glide_tag" />
 </resources>

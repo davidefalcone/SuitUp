@@ -89,7 +89,7 @@ public class ArmadioActivity extends AppCompatActivity {
         // Riferimento al data source
         dataSource = DataSource.getInstance();
         adapter = new CapiAdapter(this, dataSource.getElencoCapi());
-        dataSource.popolaDataSource(vListaCapi, this, adapter);
+        dataSource.popolaDataSource(vListaCapi, adapter);
 
         registerForContextMenu(vListaCapi);
 
@@ -338,7 +338,7 @@ public class ArmadioActivity extends AppCompatActivity {
                 else filtro.setStagione(null);
 
                 filtro.setChecked(checked);
-                dataSource.filtraRicerca(vListaCapi,ArmadioActivity.this, adapter);
+                dataSource.filtraRicerca(vListaCapi, adapter);
             }
         });
         alert.setNegativeButton(R.string.annulla, new DialogInterface.OnClickListener() {
