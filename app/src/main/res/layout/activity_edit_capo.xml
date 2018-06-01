@@ -123,16 +123,6 @@
         app:layout_constraintStart_toStartOf="@+id/spnTipo"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="260dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnOk"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.0"></FrameLayout>
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="match_parent"
@@ -144,11 +134,36 @@
         style="@android:style/Widget.Holo.Button.Inset"
         android:layout_width="39dp"
         android:layout_height="39dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_action_name"
         android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
         android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="@+id/listaColori"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fragmentContainer" />
+        app:layout_constraintTop_toTopOf="@+id/listaColori" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listaColori"
+        android:layout_width="254dp"
+        android:layout_height="77dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnAggiungi"
+        app:layout_constraintHorizontal_bias="0.133"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="368dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageCapo" />
 
 </android.support.constraint.ConstraintLayout>

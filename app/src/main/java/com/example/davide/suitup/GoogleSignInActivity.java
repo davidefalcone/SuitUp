@@ -64,7 +64,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         vAuth = FirebaseAuth.getInstance();
 
         if(vAuth.getCurrentUser() != null)
-            mostraArmadio();
+            mostraLogo();
 
         vSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +152,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
         if (vProgressDialog != null && vProgressDialog.isShowing()) {
             vProgressDialog.dismiss();
         }
+    }
+
+    private void mostraLogo() {
+        Intent intent = new Intent(getApplicationContext(), LogoActivity.class);
+        startActivity(intent);
     }
 
     private void mostraArmadio() {

@@ -22,13 +22,14 @@
 
     <TextView
         android:id="@+id/textNome"
-        android:layout_width="wrap_content"
+        android:layout_width="298dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/candal"
         android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="28sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
@@ -50,26 +51,15 @@
 
     <Button
         android:id="@+id/btnOk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="36dp"
-        android:text="@string/abbina"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/eliminabtn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginStart="130dp"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="171dp"
+        android:layout_height="68dp"
         android:layout_marginTop="8dp"
-        android:background="@android:drawable/ic_menu_delete"
-        app:layout_constraintBottom_toBottomOf="@+id/btnOk"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnOk"
-        app:layout_constraintTop_toTopOf="@+id/btnOk" />
+        android:background="@drawable/button_abbina"
+        android:text="@string/abbina"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/listaColori"
+        app:layout_constraintTop_toBottomOf="@+id/listaColori" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"
@@ -88,18 +78,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textOccasioneStagione" />
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="338dp"
-        android:layout_height="67dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="4dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listaColori"
+        android:layout_width="0dp"
+        android:layout_height="94dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnOk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.0"></FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <Button
+        android:id="@+id/eliminabtn"
+        android:layout_width="66dp"
+        android:layout_height="58dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/elimina"
+        app:layout_constraintBottom_toBottomOf="@+id/btnOk"
+        app:layout_constraintEnd_toEndOf="@+id/listaColori"
+        app:layout_constraintTop_toTopOf="@+id/btnOk"
+        app:layout_constraintVertical_bias="0.49" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="368dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageCapo" />
 
 </android.support.constraint.ConstraintLayout>

@@ -136,7 +136,6 @@ public class ArmadioActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -225,7 +224,7 @@ public class ArmadioActivity extends AppCompatActivity {
         inflater.inflate(R.menu.lista_capi, menu);
     }
 
-    public void ImageDelete (String nomeCapo) {
+    public static void ImageDelete (String nomeCapo) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         StorageReference imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
         imagePath.child(nomeCapo+".jpg").delete();

@@ -14,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -61,14 +63,12 @@ public class EditCapoActivity extends AppCompatActivity {
     private Spinner vTipo;
     private Spinner vOccasione;
     private Spinner vStagione;
-    private FragmentManager fm;
+    private RecyclerView vListaColori;
     private Button vAggiungi;
-    private Fragment fragment;
     private ImageView vImage;
     private ProgressBar progressBar;
 
     private final String EXTRA_CAPO = "capo";
-    private final String EXTRA_COLORI = "colori";
     private final int GALLERY = 0;
     private final int CAMERA = 1;
 
@@ -87,6 +87,7 @@ public class EditCapoActivity extends AppCompatActivity {
         vOccasione = findViewById(R.id.spnOccasione);
         vStagione = findViewById(R.id.spnStagione);
         vAggiungi = findViewById(R.id.btnAggiungi);
+        vListaColori = findViewById(R.id.listaColori);
         vImage = findViewById(R.id.imageCapo);
         progressBar = findViewById(R.id.progress);
         progressBar.setVisibility(View.GONE);
@@ -98,11 +99,11 @@ public class EditCapoActivity extends AppCompatActivity {
         vImage.setImageResource(R.drawable.emptyimage);
         vImage.setTag(EMPTY);
 
-        //imposto il fragment
-        setFragment();
-
         //imposto gli spinner
         setSpinner();
+
+        //imposto la recyclerview
+        setRecyclerView();
 
         //ottengo i dati passati da lista capi activity
         final Intent intent = getIntent();
@@ -123,8 +124,7 @@ public class EditCapoActivity extends AppCompatActivity {
             listaColori = Colore.ColoriRimanenti(capo);
         }else
         coloriAdapter = new EditColoriAdapter();
-        bundle.putSerializable(EXTRA_COLORI, coloriAdapter);
-        fragment.setArguments(bundle);
+        vListaColori.setAdapter(coloriAdapter);
 
 
         vAggiungi.setOnClickListener(new View.OnClickListener() {
@@ -303,20 +303,6 @@ public class EditCapoActivity extends AppCompatActivity {
         });
     }
 
-    private void setFragment (){
-        //riferimento al fragment
-        fm = getSupportFragmentManager();
-        fragment = fm.findFragmentById(R.id.fragmentContainer);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-
-        //inizializzo il fragment con la classe Horizontal list view
-        if (fragment == null ) {
-            fragment = new HorizontalListViewColoriFragment();
-            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
-        }
-    }
-
     private void setSpinner(){
         final ArrayAdapter<Capo.Tipo> tipoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Tipo.values());
         vTipo.setAdapter(tipoAdapter);
@@ -325,8 +311,17 @@ public class EditCapoActivity extends AppCompatActivity {
         final ArrayAdapter<Capo.Stagione> stagioneAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,Capo.Stagione.values());
         vStagione.setAdapter(stagioneAdapter);
     }
+
+    private void setRecyclerView(){
+        vListaColori.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(EditCapoActivity.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        vListaColori.setLayoutManager(linearLayoutManager);
+    }
+
 }
 
+//serve a far convivere il metodo settag e glide
 class App extends Application {
     @Override public void onCreate() {
         super.onCreate();

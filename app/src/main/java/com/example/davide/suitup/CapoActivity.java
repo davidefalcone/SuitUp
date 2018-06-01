@@ -1,36 +1,28 @@
 package com.example.davide.suitup;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.davide.suitup.DataModel.Capo;
-import com.example.davide.suitup.DataModel.Outfit;
+import com.example.davide.suitup.DataModel.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import android.support.v4.app.Fragment;
-
-import java.util.ArrayList;
 
 
 public class CapoActivity extends AppCompatActivity {
@@ -46,13 +38,12 @@ public class CapoActivity extends AppCompatActivity {
     private Button vAbbina;
     private TextView vNomeCapo;
     private TextView vOccasioneStagione;
-    private FragmentManager fm;
+    private RecyclerView vListaColori;
     private ProgressBar progressBar;
 
 
     //chiave per il passaggio parametri dall'altra activity
     private final String EXTRA_CAPO = "capo";
-    private final String EXTRA_COLORI = "colori";
 
 
     @Override
@@ -67,16 +58,13 @@ public class CapoActivity extends AppCompatActivity {
         vImageview = findViewById(R.id.imageCapo);
         vElimina = findViewById(R.id.eliminabtn);
         vAbbina = findViewById(R.id.btnOk);
+        vListaColori = findViewById(R.id.listaColori);
+        vElimina = findViewById(R.id.eliminabtn);
         vNomeCapo = findViewById(R.id.textNome);
         vOccasioneStagione = findViewById(R.id.textOccasioneStagione);
         progressBar = findViewById(R.id.progress);
-        fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
 
-        if (fragment == null) {
-            fragment = new HorizontalListViewColoriFragment();
-            fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
-        }
+        setRecyclerView();
 
         //ottengo i dati forniti dall'activity precedente
         final Intent intent = getIntent();
@@ -89,7 +77,7 @@ public class CapoActivity extends AppCompatActivity {
             GlideApp.with(this).load(imagePath.child(capo.getNomeCapo()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true).listener(new RequestListener<Drawable>() {
                 @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                     progressBar.setVisibility(View.GONE);
                     return false;
                 }
@@ -100,12 +88,21 @@ public class CapoActivity extends AppCompatActivity {
                     return false;
                 }
             }).into(vImageview);
-            Bundle bundle = new Bundle();
             adapter = new CapoColoriAdapter(capo.getColori());
-            if (adapter != null)
-                bundle.putSerializable(EXTRA_COLORI, adapter);
-            fragment.setArguments(bundle);
+            vListaColori.setAdapter(adapter);
+
         }
+
+        vElimina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com.example.davide.suitup.DataModel.DataSource dataSource = com.example.davide.suitup.DataModel.DataSource.getInstance();
+                dataSource.deleteCapo(capo.getNomeCapo());
+                ArmadioActivity.ImageDelete(capo.getNomeCapo());
+                Intent intent = new Intent(CapoActivity.this, ArmadioActivity.class);
+                startActivity(intent);
+            }
+        });
 
         vAbbina.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +115,12 @@ public class CapoActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void setRecyclerView(){
+        vListaColori.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CapoActivity.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        vListaColori.setLayoutManager(linearLayoutManager);
     }
 }
 

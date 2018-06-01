@@ -33,7 +33,6 @@ public class Capo implements Serializable{
         this.stagione = stagione;
         this.occasione = occasione;
         this.colori = colori;
-        //this.image = image;
     }
     public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione) {
         this.nomeCapo = nomeCapo;

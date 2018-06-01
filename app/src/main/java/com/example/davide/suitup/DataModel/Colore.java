@@ -1,5 +1,6 @@
 package com.example.davide.suitup.DataModel;
 
+import com.example.davide.suitup.AbbinamentoActivity;
 import com.example.davide.suitup.R;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -154,6 +155,22 @@ public class Colore implements Serializable{
             abbinamenti[6][13] = true;
             abbinamenti[6][14] = true;
             abbinamenti[6][15] = true;
+            abbinamenti[7][4] = true;
+            abbinamenti[7][5] = true;
+            abbinamenti[7][6] = true;
+            abbinamenti[7][9] = true;
+            abbinamenti[7][10] = true;
+            abbinamenti[8][5] = true;
+            abbinamenti[8][6] = true;
+            abbinamenti[8][7] = true;
+            abbinamenti[8][11] = true;
+            abbinamenti[8][10] = true;
+            abbinamenti[8][15] = true;
+            abbinamenti[9][7] = true;
+            abbinamenti[9][11] = true;
+            abbinamenti[9][10] = true;
+            abbinamenti[9][15] = true;
+
 
 
 

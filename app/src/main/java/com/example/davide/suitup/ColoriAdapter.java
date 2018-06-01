@@ -1,6 +1,7 @@
 package com.example.davide.suitup;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.example.davide.suitup.DataModel.Colore;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ColoriAdapter extends BaseAdapter {
 
@@ -69,4 +72,16 @@ public class ColoriAdapter extends BaseAdapter {
 
     }
 
+    public static class ColoriViewHolder extends RecyclerView.ViewHolder {
+
+        //riferimento all imageview
+        CircleImageView vColoreImage;
+
+        //costruttore
+        public ColoriViewHolder(View v) {
+            super(v);
+            vColoreImage = v.findViewById(R.id.coloreImage);
+
+        }
+    }
 }

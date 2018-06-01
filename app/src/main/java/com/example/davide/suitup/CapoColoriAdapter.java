@@ -1,7 +1,5 @@
 package com.example.davide.suitup;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,13 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.davide.suitup.DataModel.Colore;
-import com.example.davide.suitup.DataModel.DataSource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
-public class CapoColoriAdapter extends RecyclerView.Adapter<ColoriViewHolder> implements Serializable {
+public class CapoColoriAdapter extends RecyclerView.Adapter<ColoriAdapter.ColoriViewHolder> implements Serializable {
 
     //attributi
     protected ArrayList<Colore> listaColori;
@@ -29,16 +25,16 @@ public class CapoColoriAdapter extends RecyclerView.Adapter<ColoriViewHolder> im
 
     @NonNull
     @Override
-    public ColoriViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ColoriAdapter.ColoriViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_items, parent, false);
-        ColoriViewHolder holder = new ColoriViewHolder(view);
+                .inflate(R.layout.colore_item, parent, false);
+        ColoriAdapter.ColoriViewHolder holder = new ColoriAdapter.ColoriViewHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ColoriViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull ColoriAdapter.ColoriViewHolder holder, int i) {
 
         holder.vColoreImage.setImageResource(listaColori.get(i).getImageResourceId());
     }

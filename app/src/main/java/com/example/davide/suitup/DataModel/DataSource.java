@@ -2,7 +2,9 @@ package com.example.davide.suitup.DataModel;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.davide.suitup.AbbinamentiAdapter;
 import com.example.davide.suitup.CapiAdapter;
@@ -41,6 +43,9 @@ public class DataSource {
     //riferiento al database
     private DatabaseReference userStorage = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
+    //TAG
+    private final String EMPTY = "empty";
+
     // Lista locale
     private ArrayList<Capo> elencoCapi;
 
@@ -65,13 +70,8 @@ public class DataSource {
     }
 
 
-    public void deleteCapo(String nomeCapo) {
-        for (int i = 0; i<elencoCapi.size(); i++){
-            if(nomeCapo == elencoCapi.get(i).getNomeCapo()) {
-                userStorage.child(nomeCapo).removeValue();
-                break;
-            }
-        }
+    public void deleteCapo(final String nomeCapo) {
+        userStorage.child(nomeCapo).removeValue();
     }
 
 
@@ -335,26 +335,30 @@ public class DataSource {
 
     }
 
-    public void cercaCapiAbbinabili (final RecyclerView recyclerView, final Capo.Tipo tipo, final ArrayList<Colore> colori, final Context context, final Capo.Stagione stagione, final Capo.Occasione occasione){
-
+    public void cercaCapiAbbinabili (final RecyclerView recyclerView, final TextView textView, final Capo.Tipo tipo, final ArrayList<Colore> colori, final Context context, final Capo.Stagione stagione, final Capo.Occasione occasione) {
         userStorage.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 elencoCapi = new ArrayList<Capo>();
                 for (DataSnapshot capo : dataSnapshot.getChildren()) {
-                    if(capo.getValue(Capo.class).getTipo() == tipo && coloriAbbinabili(colori, capo.getValue(Capo.class).getColori()) && occasione == capo.getValue(Capo.class).getOccasione() && stagione == capo.getValue(Capo.class).getStagione())
+                    if (capo.getValue(Capo.class).getTipo() == tipo && coloriAbbinabili(colori, capo.getValue(Capo.class).getColori()) && occasione == capo.getValue(Capo.class).getOccasione() && stagione == capo.getValue(Capo.class).getStagione()) {
                         elencoCapi.add(capo.getValue(Capo.class));
-                    }
+                        }
+                }
+                if (elencoCapi.size()>0) {
                     AbbinamentiAdapter adapter = new AbbinamentiAdapter(context);
                     adapter.setListaAbbinamenti(elencoCapi);
                     recyclerView.setAdapter(adapter);
-                }
+                }else
+                    textView.setVisibility(View.GONE);
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
