@@ -1,101 +1,30 @@
 package com.example.davide.suitup.DataModel;
 
+import java.util.ArrayList;
+
 public class Outfit {
     //attributi
-    private Capo maglia;
-    private Capo pantalone;
-    private Capo scarpe;
-    private Capo felpa;
-    private Capo giacca;
-    private Capo abito;
-    private Capo camicia;
-    private Capo gonna;
-    private Capo jeans;
+    private ArrayList<Capo> listaCapi;
 
-    //costruttore
-    public Outfit () {
-        maglia = null;
-        pantalone = null;
-        scarpe = null;
-        felpa = null;
-        giacca = null;
-        abito = null;
-        camicia = null;
-        jeans = null;
-        gonna = null;
-        }
-
-    //getters e setters
-
-    public Capo getGonna() {
-        return gonna;
+    public Outfit(){
+        listaCapi = new ArrayList<>();
     }
 
-    public void setGonna(Capo gonna) {
-        this.gonna = gonna;
+    public void aggiungiCapo(Capo capo){
+        listaCapi.add(capo);
     }
 
-    public Capo getMaglia() {
-        return maglia;
+    public void rimuoviUltimo (){
+        if(listaCapi.size()!=1)
+        listaCapi.remove(listaCapi.size()-1);
     }
 
-    public void setMaglia(Capo maglia) {
-        this.maglia = maglia;
-    }
-
-    public Capo getPantalone() {
-        return pantalone;
-    }
-
-    public void setPantalone(Capo pantalone) {
-        this.pantalone = pantalone;
-    }
-
-    public Capo getScarpe() {
-        return scarpe;
-    }
-
-    public void setScarpe(Capo scarpe) {
-        this.scarpe = scarpe;
-    }
-
-    public Capo getFelpa() {
-        return felpa;
-    }
-
-    public void setFelpa(Capo felpa) {
-        this.felpa = felpa;
-    }
-
-    public Capo getGiacca() {
-        return giacca;
-    }
-
-    public void setGiacca(Capo giacca) {
-        this.giacca = giacca;
-    }
-
-    public Capo getAbito() {
-        return abito;
-    }
-
-    public void setAbito(Capo abito) {
-        this.abito = abito;
-    }
-
-    public Capo getCamicia() {
-        return camicia;
-    }
-
-    public void setCamicia(Capo camicia) {
-        this.camicia = camicia;
-    }
-
-    public Capo getJeans() {
-        return jeans;
-    }
-
-    public void setJeans(Capo jeans) {
-        this.jeans = jeans;
+    public ArrayList<Colore> getlistaColori (){
+        ArrayList<Colore> listaColori = new ArrayList<>();
+        for (int i= 0; i<listaCapi.size(); i++){
+            for (int j=0; j<listaCapi.get(i).getColori().size(); j++)
+                if(!listaColori.contains(listaCapi.get(i).getColori().get(j)))
+                listaColori.add(listaCapi.get(i).getColori().get(j));
+        }return listaColori;
     }
 }

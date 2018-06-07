@@ -335,7 +335,7 @@ public class DataSource {
 
     }
 
-    public void cercaCapiAbbinabili (final RecyclerView recyclerView, final TextView textView, final Capo.Tipo tipo, final ArrayList<Colore> colori, final Context context, final Capo.Stagione stagione, final Capo.Occasione occasione) {
+    public void cercaCapiAbbinabili (final RecyclerView recyclerView, final TextView textView, final Capo.Tipo tipo, final ArrayList<Colore> colori, final Context context, final Capo.Stagione stagione, final Capo.Occasione occasione, final AbbinamentiAdapter adapter) {
         userStorage.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -346,7 +346,6 @@ public class DataSource {
                         }
                 }
                 if (elencoCapi.size()>0) {
-                    AbbinamentiAdapter adapter = new AbbinamentiAdapter(context);
                     adapter.setListaAbbinamenti(elencoCapi);
                     recyclerView.setAdapter(adapter);
                 }else

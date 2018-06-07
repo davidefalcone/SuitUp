@@ -166,10 +166,29 @@ public class Colore implements Serializable{
             abbinamenti[8][11] = true;
             abbinamenti[8][10] = true;
             abbinamenti[8][15] = true;
-            abbinamenti[9][7] = true;
-            abbinamenti[9][11] = true;
+            abbinamenti[9][4] = true;
+            abbinamenti[9][6] = true;
             abbinamenti[9][10] = true;
             abbinamenti[9][15] = true;
+            abbinamenti[10][0] = true;
+            abbinamenti[10][1] = true;
+            abbinamenti[10][2] = true;
+            abbinamenti[10][3] = true;
+            abbinamenti[10][4] = true;
+            abbinamenti[10][5] = true;
+            abbinamenti[10][6] = true;
+            abbinamenti[10][7] = true;
+            abbinamenti[10][8] = true;
+            abbinamenti[10][9] = true;
+            abbinamenti[10][10] = true;
+            abbinamenti[10][11] = true;
+            abbinamenti[10][12] = true;
+            abbinamenti[10][13] = true;
+            abbinamenti[10][14] = true;
+            abbinamenti[10][15] = true;
+            abbinamenti[11][10] = true;
+            abbinamenti[11][4] = true;
+            abbinamenti[11][6] = true;
 
 
 

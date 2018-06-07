@@ -30,7 +30,7 @@ public class AbbinamentiAdapter extends RecyclerView.Adapter<AbbinamentiAdapter.
     private Context context;
     private StorageReference imagePath;
     private FirebaseUser user;
-    static int selected_position = -1;
+    private int selected_position;
 
 
     //costruttore
@@ -45,6 +45,7 @@ public class AbbinamentiAdapter extends RecyclerView.Adapter<AbbinamentiAdapter.
         this.context = context;
         user = FirebaseAuth.getInstance().getCurrentUser();
         imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
+        selected_position = -1;
     }
 
 
@@ -66,6 +67,13 @@ public class AbbinamentiAdapter extends RecyclerView.Adapter<AbbinamentiAdapter.
         this.context = context;
     }
 
+    public int getSelected_position() {
+        return selected_position;
+    }
+
+    public void setSelected_position(int selected_position) {
+        this.selected_position = selected_position;
+    }
 
     @Override
     public AbbinamentiViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -77,16 +85,6 @@ public class AbbinamentiAdapter extends RecyclerView.Adapter<AbbinamentiAdapter.
 
     @Override
     public void onBindViewHolder(final AbbinamentiViewHolder holder,final int i) {
-
-        //se l'elemento è stato cliccato allora viene evidenziato
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (i == RecyclerView.NO_POSITION) return;
-                    selected_position = i;
-                    notifyDataSetChanged();
-            }
-        });
         holder.itemView.setBackgroundColor(selected_position == i ? getContext().getResources().getColor(R.color.colorAccent ) : Color.TRANSPARENT);
 
         Capo capo = listaAbbinamenti.get(i);
@@ -123,5 +121,9 @@ public class AbbinamentiAdapter extends RecyclerView.Adapter<AbbinamentiAdapter.
             progressBar = itemView.findViewById(R.id.progress);
 
         }
+    }
+
+    public Capo getItem (int i){
+        return listaAbbinamenti.get(i);
     }
 }
