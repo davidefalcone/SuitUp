@@ -33,6 +33,8 @@ import com.example.davide.suitup.DataModel.Colore;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -51,6 +53,7 @@ public class EditCapoActivity extends AppCompatActivity {
     private Capo capo;
     private FirebaseUser user;
     private StorageReference imagePath;
+    private DatabaseReference myref;
     //TAG
     private final String EMPTY = "empty";
     private final String NO_EMPTY = "no_empty";
@@ -59,7 +62,6 @@ public class EditCapoActivity extends AppCompatActivity {
     //riferimenti alle view
     private Button vOk;
     private Button vAnnulla;
-    private EditText vNome;
     private Spinner vTipo;
     private Spinner vOccasione;
     private Spinner vStagione;
@@ -82,7 +84,6 @@ public class EditCapoActivity extends AppCompatActivity {
         //ottengo i riferimenti alle view
         vOk = findViewById(R.id.btnOk);
         vAnnulla = findViewById(R.id.btnAnnulla);
-        vNome = findViewById(R.id.editNome);
         vTipo = findViewById(R.id.spnTipo);
         vOccasione = findViewById(R.id.spnOccasione);
         vStagione = findViewById(R.id.spnStagione);
@@ -94,6 +95,8 @@ public class EditCapoActivity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
+
+        myref = FirebaseDatabase.getInstance().getReference();
 
         //metto nell'imageview una foto vuota
         vImage.setImageResource(R.drawable.emptyimage);
@@ -109,14 +112,12 @@ public class EditCapoActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         capo = (Capo) intent.getSerializableExtra(EXTRA_CAPO);
 
-        final Bundle bundle = new Bundle();
 
         if (capo !=  null) {
-            vNome.setText(capo.getNomeCapo());
             vTipo.setSelection(capo.getTipo().ordinal());
             vStagione.setSelection(capo.getStagione().ordinal());
             vOccasione.setSelection(capo.getOccasione().ordinal());
-            GlideApp.with(this).load(imagePath.child(capo.getNomeCapo()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
+            GlideApp.with(this).load(imagePath.child(capo.getID()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true).into(vImage);
             vImage.setTag(NO_EMPTY);
             coloriAdapter = new EditColoriAdapter(capo.getColori());
@@ -171,12 +172,13 @@ public class EditCapoActivity extends AppCompatActivity {
     private Capo leggiDatiCapo() {
         if(capo == null)
             capo = new Capo();
-        capo.setNomeCapo(vNome.getText().toString());
         capo.setTipo(Capo.Tipo.values()[vTipo.getSelectedItemPosition()]);
         capo.setStagione(Capo.Stagione.values()[vStagione.getSelectedItemPosition()]);
         capo.setOccasione(Capo.Occasione.values()[vOccasione.getSelectedItemPosition()]);
         capo.setColori(coloriAdapter.getListaColori());
-        if(capo.getNomeCapo().length()>=1 && capo.getColori().size()>=1 && vImage.getTag()==NO_EMPTY){
+        if(capo.getColori().size() >= 1 && vImage.getTag() == NO_EMPTY){
+                if(capo.getID() == null)
+                capo.setID(myref.push().getKey());
                 uploadImage();
                 return capo;
             }
@@ -283,12 +285,12 @@ public class EditCapoActivity extends AppCompatActivity {
     }
 
     private void uploadImage(){
-        imagePath.child(capo.getNomeCapo()+".jpg").delete();
+        imagePath.child(capo.getID()+".jpg").delete();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap bitmap = ((BitmapDrawable)vImage.getDrawable()).getBitmap();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-        UploadTask uploadTask = imagePath.child(capo.getNomeCapo()+".jpg").putBytes(data);
+        UploadTask uploadTask = imagePath.child(capo.getID()+".jpg").putBytes(data);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

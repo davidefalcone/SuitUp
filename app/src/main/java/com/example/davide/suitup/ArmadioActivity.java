@@ -15,6 +15,9 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -51,10 +54,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class ArmadioActivity extends AppCompatActivity {
+public class ArmadioActivity extends AppCompatActivity{
 
     //Riferimenti alle view
-    private ListView vListaCapi;
+    private RecyclerView vListaCapi;
     private Toolbar vToolbar;
     private ImageView vUserImage;
 
@@ -71,8 +74,6 @@ public class ArmadioActivity extends AppCompatActivity {
     // Costanti con i result code
     private final int REQ_ADD_CAPO = 1;
     private final int REQ_EDIT_CAPO = 2;
-
-    private String nomeCorrente;
 
 
     @Override
@@ -91,25 +92,10 @@ public class ArmadioActivity extends AppCompatActivity {
         adapter = new CapiAdapter(this, dataSource.getElencoCapi());
         dataSource.popolaDataSource(vListaCapi, adapter);
 
-        registerForContextMenu(vListaCapi);
-
         //imposto la toolbar
         setToolbar();
 
-        //Imposto il listner per il click sulla listview
-
-        vListaCapi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-
-                Capo capo = (Capo)adapter.getItem(i);
-
-                Intent intent = new Intent(view.getContext(), CapoActivity.class);
-
-                intent.putExtra(EXTRA_CAPO, capo);
-                startActivity(intent);
-            }
-        });
+        setRecyclerView();
 
         Intent intent = getIntent();
 
@@ -169,43 +155,44 @@ public class ArmadioActivity extends AppCompatActivity {
                     if(capo != null){
                         dataSource.addCapo(capo);
                         adapter.setElencoCapi(dataSource.getElencoCapi());
+                        adapter.notifyDataSetChanged();
                         }
                 }
                 break;
 
             case REQ_EDIT_CAPO :
-                if (resultCode ==RESULT_OK) {
-
+                if (resultCode == RESULT_OK) {
                     Capo capo = (Capo) data.getSerializableExtra(EXTRA_CAPO);
 
                     if (capo != null){
-                        dataSource.deleteCapo(nomeCorrente);
                         dataSource.addCapo(capo);
                         adapter.setElencoCapi(dataSource.getElencoCapi());
+                        adapter.notifyDataSetChanged();
                     }
                 }
         }
     }
 
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        // All'interno di info.position posso leggere la posizione dell'elemento selezionato
-
+        int position = -1;
+        try {
+            position = adapter.getPosition();
+        } catch (Exception e) {
+            return super.onContextItemSelected(item);
+        }
         switch (item.getItemId()) {
 
             case R.id.itemDelete:
                 // Eliminazione capo
-                dataSource.deleteCapo(adapter.getItem(info.position).getNomeCapo());
+                dataSource.deleteCapo(adapter.getItem(position).getID());
                 adapter.setElencoCapi(dataSource.getElencoCapi());
                 //quando rimuovo un capo, elimino la relativa foto nello storage
-                ImageDelete(adapter.getItem(info.position).getNomeCapo());
+                ImageDelete(adapter.getItem(position).getID());
                 return true;
 
             case R.id.itemEdit:
                 // Modifica capo
-                Capo capo = adapter.getItem(info.position);
-                nomeCorrente = capo.getNomeCapo();
+                Capo capo = adapter.getItem(position);
                 Intent intent = new Intent(getApplicationContext(), EditCapoActivity.class);
                 intent.putExtra(EXTRA_CAPO, capo);
                 // Faccio partire l'activiy in modalità edit
@@ -217,18 +204,12 @@ public class ArmadioActivity extends AppCompatActivity {
         }
     }
 
-    //creazione del context menu
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.lista_capi, menu);
-    }
-
-    public static void ImageDelete (String nomeCapo) {
+    public static void ImageDelete (String ID) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         StorageReference imagePath = FirebaseStorage.getInstance().getReference().child(user.getUid());
-        imagePath.child(nomeCapo+".jpg").delete();
+        imagePath.child(ID+".jpg").delete();
 }
+
 
     public void setToolbar(){
         setSupportActionBar(vToolbar);
@@ -351,5 +332,33 @@ public class ArmadioActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private void setRecyclerView(){
+        int numberOfColumns = 2;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, numberOfColumns);
+        vListaCapi.setLayoutManager(gridLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(vListaCapi.getContext(),
+                gridLayoutManager.getOrientation());
+        vListaCapi.addItemDecoration(dividerItemDecoration);
+        vListaCapi.addOnItemTouchListener(new RecyclerItemClickListener(ArmadioActivity.this, vListaCapi, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int i) {
+                Capo capo = (Capo)adapter.getItem(i);
+
+                Intent intent = new Intent(view.getContext(), CapoActivity.class);
+
+                intent.putExtra(EXTRA_CAPO, capo);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+                adapter.setPosition(position);
+            }
+        }));
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
 

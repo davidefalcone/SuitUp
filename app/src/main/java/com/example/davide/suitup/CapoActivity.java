@@ -36,7 +36,6 @@ public class CapoActivity extends AppCompatActivity {
     private ImageView vImageview;
     private Button vElimina;
     private Button vAbbina;
-    private TextView vNomeCapo;
     private TextView vOccasioneStagione;
     private RecyclerView vListaColori;
     private ProgressBar progressBar;
@@ -60,7 +59,6 @@ public class CapoActivity extends AppCompatActivity {
         vAbbina = findViewById(R.id.btnOk);
         vListaColori = findViewById(R.id.listaColori);
         vElimina = findViewById(R.id.eliminabtn);
-        vNomeCapo = findViewById(R.id.textNome);
         vOccasioneStagione = findViewById(R.id.textOccasioneStagione);
         progressBar = findViewById(R.id.progress);
 
@@ -71,10 +69,9 @@ public class CapoActivity extends AppCompatActivity {
         final Capo capo = (Capo) intent.getSerializableExtra(EXTRA_CAPO);
 
         if (capo != null) {
-            vNomeCapo.setText(capo.getNomeCapo());
             vOccasioneStagione.setText(capo.getOccasione() + " • " + capo.getStagione());
             progressBar.setVisibility(View.VISIBLE);
-            GlideApp.with(this).load(imagePath.child(capo.getNomeCapo()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
+            GlideApp.with(this).load(imagePath.child(capo.getID()+".jpg")).diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true).listener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -97,8 +94,8 @@ public class CapoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 com.example.davide.suitup.DataModel.DataSource dataSource = com.example.davide.suitup.DataModel.DataSource.getInstance();
-                dataSource.deleteCapo(capo.getNomeCapo());
-                ArmadioActivity.ImageDelete(capo.getNomeCapo());
+                dataSource.deleteCapo(capo.getID());
+                ArmadioActivity.ImageDelete(capo.getID());
                 Intent intent = new Intent(CapoActivity.this, ArmadioActivity.class);
                 startActivity(intent);
             }

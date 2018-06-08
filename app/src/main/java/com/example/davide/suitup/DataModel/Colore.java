@@ -106,14 +106,18 @@ public class Colore implements Serializable{
             abbinamenti[0][11] = true;
             abbinamenti[0][14] = true;
             abbinamenti[1][4] = true;
+            abbinamenti[1][1] = true;
             abbinamenti[1][5] = true;
             abbinamenti[1][10] = true;
             abbinamenti[1][6] = true;
             abbinamenti[2][4] = true;
             abbinamenti[2][5] = true;
+            abbinamenti[2][2] = true;
             abbinamenti[2][10] = true;
+            abbinamenti[2][6] = true;
             abbinamenti[3][4] = true;
             abbinamenti[3][6] = true;
+            abbinamenti[3][3] = true;
             abbinamenti[3][10] = true;
             abbinamenti[4][0] = true;
             abbinamenti[4][1] = true;
@@ -132,6 +136,7 @@ public class Colore implements Serializable{
             abbinamenti[5][1] = true;
             abbinamenti[5][2] = true;
             abbinamenti[5][3] = true;
+            abbinamenti[5][5] = true;
             abbinamenti[5][4] = true;
             abbinamenti[5][6] = true;
             abbinamenti[5][7] = true;
@@ -157,6 +162,7 @@ public class Colore implements Serializable{
             abbinamenti[6][15] = true;
             abbinamenti[7][4] = true;
             abbinamenti[7][5] = true;
+            abbinamenti[7][7] = true;
             abbinamenti[7][6] = true;
             abbinamenti[7][9] = true;
             abbinamenti[7][10] = true;
@@ -166,10 +172,12 @@ public class Colore implements Serializable{
             abbinamenti[8][11] = true;
             abbinamenti[8][10] = true;
             abbinamenti[8][15] = true;
+            abbinamenti[8][8] = true;
             abbinamenti[9][4] = true;
             abbinamenti[9][6] = true;
             abbinamenti[9][10] = true;
             abbinamenti[9][15] = true;
+            abbinamenti[9][9] = true;
             abbinamenti[10][0] = true;
             abbinamenti[10][1] = true;
             abbinamenti[10][2] = true;
@@ -188,7 +196,26 @@ public class Colore implements Serializable{
             abbinamenti[10][15] = true;
             abbinamenti[11][10] = true;
             abbinamenti[11][4] = true;
+            abbinamenti[11][11] = true;
             abbinamenti[11][6] = true;
+            abbinamenti[12][10] = true;
+            abbinamenti[12][4] = true;
+            abbinamenti[12][6] = true;
+            abbinamenti[12][12] = true;
+            abbinamenti[13][10] = true;
+            abbinamenti[13][4] = true;
+            abbinamenti[13][13] = true;
+            abbinamenti[13][6] = true;
+            abbinamenti[14][10] = true;
+            abbinamenti[14][4] = true;
+            abbinamenti[14][14] = true;
+            abbinamenti[14][6] = true;
+            abbinamenti[15][5] = true;
+            abbinamenti[15][6] = true;
+            abbinamenti[15][8] = true;
+            abbinamenti[15][15] = true;
+            abbinamenti[15][10] = true;
+            abbinamenti[15][9] = true;
 
 
 

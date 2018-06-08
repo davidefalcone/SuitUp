@@ -43,9 +43,6 @@ public class DataSource {
     //riferiento al database
     private DatabaseReference userStorage = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
-    //TAG
-    private final String EMPTY = "empty";
-
     // Lista locale
     private ArrayList<Capo> elencoCapi;
 
@@ -66,19 +63,19 @@ public class DataSource {
 
 
     public void addCapo(Capo capo) {
-        userStorage.child(capo.getNomeCapo()).setValue(capo);
+        userStorage.child(capo.getID()).setValue(capo);
     }
 
 
-    public void deleteCapo(final String nomeCapo) {
-        userStorage.child(nomeCapo).removeValue();
+    public void deleteCapo(String ID) {
+        userStorage.child(ID).removeValue();
     }
 
 
-    public Capo getCapo(String nomeCapo) {
+    public Capo getCapo(String ID) {
         Capo capo = null;
         for (int i = 0; i<elencoCapi.size(); i++){
-            if(nomeCapo == elencoCapi.get(i).getNomeCapo()) {
+            if(ID == elencoCapi.get(i).getID()) {
                 capo = elencoCapi.get(i);
             }
         }return capo;
@@ -89,7 +86,7 @@ public class DataSource {
         return elencoCapi;
     }
 
-    public void filtraRicerca(final  ListView listView,final CapiAdapter adapter){
+    public void filtraRicerca(final  RecyclerView recyclerView,final CapiAdapter adapter){
         final Filtro filtro = Filtro.getInstance();
         final boolean checked[] = filtro.getChecked();
         int n = (checked[0] ? 4 : 0) + (checked[1] ? 2 : 0) + (checked[2] ? 1 : 0);
@@ -104,7 +101,7 @@ public class DataSource {
                             elencoCapi.add(capo.getValue(Capo.class));
                         }
                         adapter.setElencoCapi(elencoCapi);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
                         filtro.setTipo(null);
                         filtro.setOccasione(null);
                         filtro.setStagione(null);
@@ -132,7 +129,7 @@ public class DataSource {
                             elencoCapi.add(capo.getValue(Capo.class));
                         }
                         adapter.setElencoCapi(elencoCapi);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
                         filtro.setTipo(null);
                         filtro.setOccasione(null);
                         filtro.setStagione(null);
@@ -159,7 +156,7 @@ public class DataSource {
                             elencoCapi.add(capo.getValue(Capo.class));
                         }
                         adapter.setElencoCapi(elencoCapi);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
                         filtro.setTipo(null);
                         filtro.setOccasione(null);
                         filtro.setStagione(null);
@@ -186,7 +183,7 @@ public class DataSource {
                             elencoCapi.add(capo.getValue(Capo.class));
                         }
                         adapter.setElencoCapi(elencoCapi);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
                         filtro.setTipo(null);
                         filtro.setOccasione(null);
                         filtro.setStagione(null);
@@ -213,7 +210,7 @@ public class DataSource {
                             elencoCapi.add(capo.getValue(Capo.class));
                         }
                         adapter.setElencoCapi(elencoCapi);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
                         filtro.setTipo(null);
                         filtro.setOccasione(null);
                         filtro.setStagione(null);
@@ -240,7 +237,7 @@ public class DataSource {
                             elencoCapi.add(capo.getValue(Capo.class));
                         }
                         adapter.setElencoCapi(elencoCapi);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
                         filtro.setTipo(null);
                         filtro.setOccasione(null);
                         filtro.setStagione(null);
@@ -267,7 +264,7 @@ public class DataSource {
                             elencoCapi.add(capo.getValue(Capo.class));
                         }
                         adapter.setElencoCapi(elencoCapi);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
                         filtro.setTipo(null);
                         filtro.setOccasione(null);
                         filtro.setStagione(null);
@@ -294,7 +291,7 @@ public class DataSource {
                                 elencoCapi.add(capo.getValue(Capo.class));
                             }
                             adapter.setElencoCapi(elencoCapi);
-                            listView.setAdapter(adapter);
+                            recyclerView.setAdapter(adapter);
                             filtro.setTipo(null);
                             filtro.setOccasione(null);
                             filtro.setStagione(null);
@@ -314,7 +311,7 @@ public class DataSource {
 
        }
 
-    public void popolaDataSource(final ListView listView,final CapiAdapter adapter) {
+    public void popolaDataSource(final RecyclerView recyclerView,final CapiAdapter adapter) {
         userStorage.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -323,7 +320,7 @@ public class DataSource {
                     elencoCapi.add(capo.getValue(Capo.class));
                 }
                 adapter.setElencoCapi(elencoCapi);
-                listView.setAdapter(adapter);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -335,7 +332,7 @@ public class DataSource {
 
     }
 
-    public void cercaCapiAbbinabili (final RecyclerView recyclerView, final TextView textView, final Capo.Tipo tipo, final ArrayList<Colore> colori, final Context context, final Capo.Stagione stagione, final Capo.Occasione occasione, final AbbinamentiAdapter adapter) {
+    public void cercaCapiAbbinabili (final RecyclerView recyclerView, final TextView textView, final Capo.Tipo tipo, final ArrayList<Colore> colori, final Context context, final Capo.Stagione stagione, final Capo.Occasione occasione, final AbbinamentiAdapter adapter,final String ID) {
         userStorage.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -347,9 +344,16 @@ public class DataSource {
                 }
                 if (elencoCapi.size()>0) {
                     adapter.setListaAbbinamenti(elencoCapi);
+                    if(ID != null)
+                    adapter.setSelected_position(adapter.getItemPosition(ID));
+                    else adapter.setSelected_position(-1);
+                    adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-                }else
+                    textView.setVisibility(View.VISIBLE);
+                }else {
                     textView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
+                }
 
             }
 
@@ -361,5 +365,5 @@ public class DataSource {
 
     }
 
-
 }
+

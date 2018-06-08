@@ -1,13 +1,17 @@
 package com.example.davide.suitup;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -83,13 +87,20 @@ public class AbbinamentiAdapter extends RecyclerView.Adapter<AbbinamentiAdapter.
         return holder;
     }
 
+    public int getItemPosition(String ID ){
+        for (int i= 0; i<listaAbbinamenti.size(); i++){
+            if (listaAbbinamenti.get(i).getID() == ID)
+                return i;
+        }return -1;
+    }
+
     @Override
     public void onBindViewHolder(final AbbinamentiViewHolder holder,final int i) {
         holder.itemView.setBackgroundColor(selected_position == i ? getContext().getResources().getColor(R.color.colorAccent ) : Color.TRANSPARENT);
 
         Capo capo = listaAbbinamenti.get(i);
         holder.progressBar.setVisibility(View.VISIBLE);
-        GlideApp.with(context).load(imagePath.child(capo.getNomeCapo()+".jpg")).listener(new RequestListener<Drawable>() {
+        GlideApp.with(context).load(imagePath.child(capo.getID()+".jpg")).listener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 holder.progressBar.setVisibility(View.GONE);
@@ -110,7 +121,7 @@ public class AbbinamentiAdapter extends RecyclerView.Adapter<AbbinamentiAdapter.
         return listaAbbinamenti.size();
     }
 
-    public class AbbinamentiViewHolder extends RecyclerView.ViewHolder {
+    public class AbbinamentiViewHolder extends RecyclerView.ViewHolder{
         //riferimento all'imageview
         ImageView vAbbinamentoImage;
         ProgressBar progressBar;

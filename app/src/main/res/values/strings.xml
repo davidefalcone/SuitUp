@@ -38,5 +38,13 @@
     <string name="abiti">Abito</string>
     <string name="camicie">Camicie</string>
     <string name="gonne">Gonne</string>
-    <item type="id" name="glide_tag" />
+    <string name="ecco_il_tuo_outfit">Ecco il tuo outfit di oggi</string>
+    <string name="buona_giornata">Buona giornata!</string>
+    <string name="tip1">Cerca di non abbinare capi dello stesso colore se non vuoi sembrare Arlecchino! Usa solo dei richiami.</string>
+    <string name="tip2">Cerca di prediligere tessuti di qualità! Potresti sembrare uno zingaro..</string>
+    <string name="tip3">Se hai difficoltà e sei donna, chiedi a Davide</string>
+    <string name="tip4">Ci sono alcuni capi universalmente riconosciuti come must-have del guardaroba, che non subiscono le mode e fungono da passe-partout in mille occasioni.</string>
+    <string name="tip5">Considera anche la comodità, soprattutto se devi passare molto tempo fuori.</string>
+    <string name="torna_armadio">TORNA ALL\'ARMADIO</string>
+    <item name="glide_tag" type="id" />
 </resources>

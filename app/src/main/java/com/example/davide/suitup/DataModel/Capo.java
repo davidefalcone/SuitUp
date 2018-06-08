@@ -18,38 +18,17 @@ public class Capo implements Serializable{
         }
     };
     public enum Occasione  {Elegante, Sportivo, Casual};
-    private String nomeCapo;
+    private String ID;
     private Tipo tipo;
     private Stagione stagione;
     private Occasione occasione;
     private ArrayList<Colore> colori= new ArrayList<Colore>();
 
-    public Capo() {
+    public String getID() {
+        return ID;
     }
 
-    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione, ArrayList<Colore> colori ) {
-        this.nomeCapo = nomeCapo;
-        this.tipo = tipo;
-        this.stagione = stagione;
-        this.occasione = occasione;
-        this.colori = colori;
-    }
-    public Capo(String nomeCapo, Tipo tipo, Stagione stagione, Occasione occasione) {
-        this.nomeCapo = nomeCapo;
-        this.tipo = tipo;
-        this.stagione = stagione;
-        this.occasione = occasione;
-    }
-
-
-
-    public String getNomeCapo() {
-        return nomeCapo;
-    }
-
-    public void setNomeCapo(String nomeCapo) {
-        this.nomeCapo = nomeCapo;
-    }
+    public void setID(String ID) { this.ID = ID; }
 
     public Tipo getTipo() {
         return tipo;

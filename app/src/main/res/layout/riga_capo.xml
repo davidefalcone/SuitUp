@@ -2,58 +2,42 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ImageView
         android:id="@+id/imageCapo"
-        android:layout_width="103dp"
-        android:layout_height="88dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="170dp"
+        android:layout_height="240dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_launcher_background"
-        app:civ_border_color="#FFFFFF"
-        app:civ_border_width="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textNomecapo"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageCapo"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="107dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
 
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="107dp"
         android:layout_height="103dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageCapo"
+        app:layout_constraintEnd_toEndOf="@+id/imageCapo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageCapo" />
 
     <TextView
         android:id="@+id/textTipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
-        app:layout_constraintStart_toStartOf="@+id/textNomecapo"
-        app:layout_constraintTop_toBottomOf="@+id/textNomecapo" />
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageCapo"
+        app:layout_constraintStart_toStartOf="@+id/imageCapo"
+        app:layout_constraintTop_toBottomOf="@+id/imageCapo" />
+
 
 </android.support.constraint.ConstraintLayout>
