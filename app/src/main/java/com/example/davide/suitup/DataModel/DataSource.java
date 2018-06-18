@@ -352,7 +352,7 @@ public class DataSource {
                     textView.setVisibility(View.VISIBLE);
                 }else {
                     textView.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
+                    adapter.setListaAbbinamenti(new ArrayList<Capo>());
                 }
 
             }

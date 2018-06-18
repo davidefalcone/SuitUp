@@ -9,9 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.davide.suitup.DataModel.Capo;
-import com.example.davide.suitup.DataModel.Colore;
 import com.example.davide.suitup.DataModel.DataSource;
 import com.example.davide.suitup.DataModel.Outfit;
 
@@ -188,60 +186,77 @@ public class AbbinamentoActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 if(position != ((AbbinamentiAdapter)recyclerView.getAdapter()).getSelected_position()) {
+                    //ho cloccato su un capo diverso da quello selezionato
                     switch (((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getTipo()){
                         case Maglia:
                             outfit.setMaglia(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            maglieSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                         case Pantalone:
                             outfit.setPantalone(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            pantaloniSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                         case Camicia:
                             outfit.setCamicia(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            camicieSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                         case Scarpe:
                             outfit.setScarpe(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            scarpeSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                         case Giacca:
                             outfit.setGiacca(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            giaccheSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                         case Gonna:
                             outfit.setGonna(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            gonneSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                         case Felpa:
                             outfit.setFelpa(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            felpeSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                         case Abito:
                             outfit.setAbito(((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position));
+                            abitiSelectedID = ((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getID();
                             break;
                     }
                     ((AbbinamentiAdapter) recyclerView.getAdapter()).setSelected_position(position);
                     ((AbbinamentiAdapter) recyclerView.getAdapter()).notifyDataSetChanged();
-                    saveSelectedPosition(recyclerView);
                 }else{
+                    //ho cliccato un capo già selezionato
                     switch (((AbbinamentiAdapter) recyclerView.getAdapter()).getItem(position).getTipo()){
                         case Maglia:
                             outfit.setMaglia(null);
+                            maglieSelectedID = null;
                             break;
                         case Pantalone:
                             outfit.setPantalone(null);
+                            pantaloniSelectedID = null;
                             break;
                         case Camicia:
                             outfit.setCamicia(null);
+                            camicieSelectedID = null;
                             break;
                         case Scarpe:
                             outfit.setScarpe(null);
+                            scarpeSelectedID = null;
                             break;
                         case Giacca:
                             outfit.setGiacca(null);
+                            giaccheSelectedID = null;
                             break;
                         case Gonna:
                             outfit.setGonna(null);
+                            gonneSelectedID = null;
                             break;
                         case Felpa:
                             outfit.setFelpa(null);
+                            felpeSelectedID = null;
                             break;
                         case Abito:
                             outfit.setAbito(null);
+                            abitiSelectedID = null;
                             break;
                     }
                     ((AbbinamentiAdapter) recyclerView.getAdapter()).setSelected_position(-1);
@@ -383,33 +398,6 @@ public class AbbinamentoActivity extends AppCompatActivity {
         if(recyclerView != listaPantaloni && listaPantaloni.getVisibility() == View.VISIBLE) {
             dataSource.cercaCapiAbbinabili(listaPantaloni, textPantalone, Capo.Tipo.Pantalone, outfit.getlistaColori(), AbbinamentoActivity.this, capo.getStagione(), capo.getOccasione(), pantaloniAdapter, pantaloniSelectedID);
         }
-    }
-
-    private void saveSelectedPosition(RecyclerView recyclerView){
-        if(recyclerView != listaPantaloni && listaPantaloni.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaPantaloni.getAdapter()).getSelected_position()) != -1)
-            pantaloniSelectedID = ((AbbinamentiAdapter)listaPantaloni.getAdapter()).getItem(((AbbinamentiAdapter)listaPantaloni.getAdapter()).getSelected_position()).getID();
-
-        if(recyclerView != listaScarpe && listaScarpe.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaScarpe.getAdapter()).getSelected_position()) != -1)
-            scarpeSelectedID = ((AbbinamentiAdapter)listaScarpe.getAdapter()).getItem(((AbbinamentiAdapter)listaScarpe.getAdapter()).getSelected_position()).getID();
-
-        if(recyclerView != listaMaglie && listaMaglie.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaMaglie.getAdapter()).getSelected_position()) != -1)
-            maglieSelectedID = ((AbbinamentiAdapter)listaMaglie.getAdapter()).getItem(((AbbinamentiAdapter)listaPantaloni.getAdapter()).getSelected_position()).getID();
-
-        if(recyclerView != listaFelpe && listaFelpe.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaFelpe.getAdapter()).getSelected_position()) != -1)
-            felpeSelectedID = ((AbbinamentiAdapter)listaFelpe.getAdapter()).getItem(((AbbinamentiAdapter)listaFelpe.getAdapter()).getSelected_position()).getID();
-
-        if(recyclerView != listaGonne && listaGonne.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaGonne.getAdapter()).getSelected_position()) != -1)
-            gonneSelectedID = ((AbbinamentiAdapter)listaGonne.getAdapter()).getItem(((AbbinamentiAdapter)listaGonne.getAdapter()).getSelected_position()).getID();
-
-        if(recyclerView != listaGiacche && listaGiacche.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaGiacche.getAdapter()).getSelected_position()) != -1)
-            giaccheSelectedID = ((AbbinamentiAdapter)listaGiacche.getAdapter()).getItem(((AbbinamentiAdapter)listaGiacche.getAdapter()).getSelected_position()).getID();
-
-        if(recyclerView != listaAbiti && listaAbiti.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaAbiti.getAdapter()).getSelected_position()) != -1)
-            abitiSelectedID = ((AbbinamentiAdapter)listaAbiti.getAdapter()).getItem(((AbbinamentiAdapter)listaAbiti.getAdapter()).getSelected_position()).getID();
-
-        if(recyclerView != listaCamicie && listaCamicie.getVisibility() == View.VISIBLE && (((AbbinamentiAdapter)listaCamicie.getAdapter()).getSelected_position()) != -1)
-            camicieSelectedID = ((AbbinamentiAdapter)listaCamicie.getAdapter()).getItem(((AbbinamentiAdapter)listaCamicie.getAdapter()).getSelected_position()).getID();
-
     }
 
 }
